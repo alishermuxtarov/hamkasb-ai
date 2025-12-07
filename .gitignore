@@ -58,3 +58,5 @@ storage/
 
 docs/
 .ignore/
+
+.env.production

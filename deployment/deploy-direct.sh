@@ -246,6 +246,10 @@ pnpm build
 echo -e "${YELLOW}[Server] Copying static files to standalone...${NC}"
 mkdir -p .next/standalone/apps/web/.next
 cp -r .next/static .next/standalone/apps/web/.next/ 2>/dev/null || true
+# Also copy to the root of standalone for proper path resolution
+mkdir -p .next/standalone/.next
+cp -r .next/static .next/standalone/.next/ 2>/dev/null || true
+echo -e "${GREEN}[Server] Static files copied${NC}"
 
 cd "$DEPLOY_DIR"
 

@@ -256,9 +256,9 @@ module.exports = {
   apps: [
     {
       name: 'hamkasb-api',
-      script: 'apps/api/dist/index.js',
+      script: 'dist/index.js',
       interpreter: '/home/alisher/.bun/bin/bun',
-      cwd: '/opt/hamkasb-ai',
+      cwd: '/opt/hamkasb-ai/apps/api',
       env: {
         NODE_ENV: 'production',
         DATABASE_URL: '${DATABASE_URL}',

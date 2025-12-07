@@ -219,8 +219,12 @@ bun run build
 # Copy pdf.js files needed by pdf-parse (Bun doesn't copy them automatically)
 echo -e "${YELLOW}[Server] Copying pdf.js files for pdf-parse...${NC}"
 if [ -d "node_modules/pdf-parse/lib/pdf.js" ]; then
+    # Copy to dist for bundled code
     mkdir -p dist/pdf.js
     cp -r node_modules/pdf-parse/lib/pdf.js/* dist/pdf.js/ 2>/dev/null || true
+    # Also copy to root of apps/api so relative paths work from cwd
+    mkdir -p pdf.js
+    cp -r node_modules/pdf-parse/lib/pdf.js/* pdf.js/ 2>/dev/null || true
     echo -e "${GREEN}[Server] pdf.js files copied${NC}"
 else
     echo -e "${YELLOW}[Server] Warning: pdf.js directory not found${NC}"

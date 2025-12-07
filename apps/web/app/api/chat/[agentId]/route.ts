@@ -97,8 +97,14 @@ export async function POST(
                 const chunkSize = 30
                 for (let i = 0; i < message.length; i += chunkSize) {
                   const chunk = message.slice(i, i + chunkSize)
-                  // Escape special characters for JSON string
-                  const escapedChunk = JSON.stringify(chunk).slice(1, -1) // Remove quotes from JSON.stringify
+                  // Properly escape the chunk for JSON string inside the data stream
+                  // We need to escape: backslashes, quotes, newlines, etc.
+                  const escapedChunk = chunk
+                    .replace(/\\/g, '\\\\')  // Escape backslashes
+                    .replace(/"/g, '\\"')    // Escape quotes
+                    .replace(/\n/g, '\\n')   // Escape newlines
+                    .replace(/\r/g, '\\r')   // Escape carriage returns
+                    .replace(/\t/g, '\\t')   // Escape tabs
                   // AI SDK data stream format: 0:"text"\n
                   const data = `0:"${escapedChunk}"\n`
                   controller.enqueue(encoder.encode(data))

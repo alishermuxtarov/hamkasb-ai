@@ -260,7 +260,7 @@ module.exports = {
   apps: [
     {
       name: 'hamkasb-api',
-      script: 'dist/index.js',
+      script: 'src/index.ts',
       interpreter: '/home/alisher/.bun/bin/bun',
       cwd: '/opt/hamkasb-ai/apps/api',
       env: {

@@ -44,8 +44,11 @@ COPY apps/web ./apps/web
 COPY --from=deps /app/node_modules ./node_modules
 
 # Install all dependencies (including dev) for build
+# Remove packageManager field for pnpm install
+WORKDIR /app
+RUN node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); delete pkg.packageManager; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));" || true
 WORKDIR /app/apps/web
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile || pnpm install
 
 # Build Next.js application
 ENV NEXT_TELEMETRY_DISABLED=1

@@ -4,8 +4,8 @@ services:
   # Elysia API Backend
   api:
     build:
-      context: ./apps/api
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/api/Dockerfile
     container_name: hamkasb-api
     restart: unless-stopped
     ports:
@@ -39,8 +39,8 @@ services:
   # Next.js Web Frontend
   web:
     build:
-      context: ./apps/web
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./apps/web/Dockerfile
     container_name: hamkasb-web
     restart: unless-stopped
     ports:

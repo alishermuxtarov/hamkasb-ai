@@ -13,11 +13,11 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-SERVER_USER="${DEPLOY_USER:-root}"
-SERVER_HOST="${DEPLOY_HOST:-hamkasb-ai.uz}"
+SERVER_USER="${DEPLOY_USER:-alisher}"
+SERVER_HOST="${DEPLOY_HOST:-75.119.128.223}"
 DEPLOY_DIR="/opt/hamkasb-ai"
 REPO_URL="https://github.com/alishermuxtarov/hamkasb-ai.git"
-BRANCH="${DEPLOY_BRANCH:-main}"
+BRANCH="${DEPLOY_BRANCH:-master}"
 
 echo -e "${BLUE}╔════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║     Hamkasb.AI Production Deployment          ║${NC}"
@@ -55,6 +55,20 @@ if ! ssh -o BatchMode=yes -o ConnectTimeout=5 "$SERVER_USER@$SERVER_HOST" "echo 
 fi
 print_success "SSH connection successful"
 
+# Upload .env.production if it exists locally
+if [ -f .env.production ]; then
+    print_step "Uploading .env.production to server..."
+    # Create directory first if it doesn't exist
+    ssh "$SERVER_USER@$SERVER_HOST" "sudo mkdir -p $DEPLOY_DIR && sudo chown $SERVER_USER:$SERVER_USER $DEPLOY_DIR" || true
+    scp .env.production "$SERVER_USER@$SERVER_HOST:$DEPLOY_DIR/.env.production" || {
+        print_error "Failed to upload .env.production. Continuing anyway..."
+    }
+    print_success ".env.production uploaded"
+else
+    print_error ".env.production not found locally. Make sure to create it before deployment."
+    exit 1
+fi
+
 # Deploy to server
 print_step "Connecting to server and deploying..."
 
@@ -70,7 +84,7 @@ NC='\033[0m'
 
 DEPLOY_DIR="/opt/hamkasb-ai"
 REPO_URL="https://github.com/alishermuxtarov/hamkasb-ai.git"
-BRANCH="main"
+BRANCH="master"
 
 echo -e "${BLUE}[Server] Starting deployment process...${NC}"
 
@@ -79,30 +93,31 @@ echo -e "${YELLOW}[Server] Checking system requirements...${NC}"
 if ! command -v docker &> /dev/null; then
     echo -e "${YELLOW}[Server] Installing Docker...${NC}"
     curl -fsSL https://get.docker.com -o get-docker.sh
-    sh get-docker.sh
-    systemctl enable docker
-    systemctl start docker
+    sudo sh get-docker.sh
+    sudo systemctl enable docker
+    sudo systemctl start docker
+    sudo usermod -aG docker $USER || sudo usermod -aG docker alisher || true
     rm get-docker.sh
 fi
 
 if ! command -v docker-compose &> /dev/null; then
     echo -e "${YELLOW}[Server] Installing Docker Compose...${NC}"
     DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep 'tag_name' | cut -d\" -f4)
-    curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    chmod +x /usr/local/bin/docker-compose
+    sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
 fi
 
 if ! command -v nginx &> /dev/null; then
     echo -e "${YELLOW}[Server] Installing Nginx...${NC}"
-    apt-get update
-    apt-get install -y nginx
-    systemctl enable nginx
+    sudo apt-get update
+    sudo apt-get install -y nginx
+    sudo systemctl enable nginx
 fi
 
 if ! command -v git &> /dev/null; then
     echo -e "${YELLOW}[Server] Installing Git...${NC}"
-    apt-get update
-    apt-get install -y git
+    sudo apt-get update
+    sudo apt-get install -y git
 fi
 
 echo -e "${GREEN}[Server] System requirements satisfied${NC}"
@@ -110,34 +125,48 @@ echo -e "${GREEN}[Server] System requirements satisfied${NC}"
 # Create deployment directory
 if [ ! -d "$DEPLOY_DIR" ]; then
     echo -e "${YELLOW}[Server] Creating deployment directory...${NC}"
-    mkdir -p "$DEPLOY_DIR"
+    sudo mkdir -p "$DEPLOY_DIR"
+    sudo chown $USER:$USER "$DEPLOY_DIR" || sudo chown alisher:alisher "$DEPLOY_DIR" || true
     cd "$DEPLOY_DIR"
     git clone "$REPO_URL" .
-else
+elif [ -d "$DEPLOY_DIR/.git" ]; then
     echo -e "${YELLOW}[Server] Updating repository...${NC}"
     cd "$DEPLOY_DIR"
     git fetch origin
     git reset --hard origin/$BRANCH
+    git clean -fd
+else
+    echo -e "${YELLOW}[Server] Directory exists but not a git repo, backing up and cloning...${NC}"
+    # Backup existing directory
+    if [ -n "$(ls -A $DEPLOY_DIR 2>/dev/null)" ]; then
+        sudo mv "$DEPLOY_DIR" "${DEPLOY_DIR}.backup.$(date +%s)" || true
+    fi
+    sudo mkdir -p "$DEPLOY_DIR"
+    sudo chown $USER:$USER "$DEPLOY_DIR" || sudo chown alisher:alisher "$DEPLOY_DIR" || true
+    cd "$DEPLOY_DIR"
+    git clone "$REPO_URL" .
 fi
 
+# .env.production should be uploaded before this script runs
 # Check if .env.production exists
 if [ ! -f .env.production ]; then
     echo -e "${RED}[Server] ERROR: .env.production file not found!${NC}"
-    echo -e "${YELLOW}[Server] Please create .env.production file with production environment variables${NC}"
-    echo -e "${YELLOW}[Server] You can use .env.production.example as a template${NC}"
+    echo -e "${YELLOW}[Server] Please upload .env.production file to $DEPLOY_DIR/.env.production${NC}"
+    echo -e "${YELLOW}[Server] The deploy script should upload it automatically from local machine${NC}"
     exit 1
 fi
+echo -e "${GREEN}[Server] .env.production file found${NC}"
 
 # Stop existing containers
 echo -e "${YELLOW}[Server] Stopping existing containers...${NC}"
-docker-compose -f docker-compose.production.yml down || true
+docker compose -f docker-compose.production.yml down || docker-compose -f docker-compose.production.yml down || true
 
 # Build and start containers
 echo -e "${YELLOW}[Server] Building Docker images...${NC}"
-docker-compose -f docker-compose.production.yml build --no-cache
+docker compose -f docker-compose.production.yml build --no-cache || docker-compose -f docker-compose.production.yml build --no-cache
 
 echo -e "${YELLOW}[Server] Starting containers...${NC}"
-docker-compose -f docker-compose.production.yml up -d
+docker compose -f docker-compose.production.yml up -d || docker-compose -f docker-compose.production.yml up -d
 
 # Wait for services to be healthy
 echo -e "${YELLOW}[Server] Waiting for services to start...${NC}"
@@ -148,20 +177,32 @@ if docker ps | grep -q hamkasb-api && docker ps | grep -q hamkasb-web; then
     echo -e "${GREEN}[Server] Containers are running${NC}"
 else
     echo -e "${RED}[Server] ERROR: Containers failed to start${NC}"
-    docker-compose -f docker-compose.production.yml logs
+    docker compose -f docker-compose.production.yml logs || docker-compose -f docker-compose.production.yml logs
     exit 1
+fi
+
+# Ensure landing page directory exists
+echo -e "${YELLOW}[Server] Setting up landing page directory...${NC}"
+if [ ! -d /var/www/hamkasb-landing ]; then
+    sudo mkdir -p /var/www/hamkasb-landing
+    echo -e "${GREEN}[Server] Landing page directory created${NC}"
 fi
 
 # Configure Nginx
 echo -e "${YELLOW}[Server] Configuring Nginx...${NC}"
 if [ -f deployment/nginx/hamkasb-ai.conf ]; then
-    cp deployment/nginx/hamkasb-ai.conf /etc/nginx/sites-available/hamkasb-ai
-    ln -sf /etc/nginx/sites-available/hamkasb-ai /etc/nginx/sites-enabled/hamkasb-ai
+    sudo cp deployment/nginx/hamkasb-ai.conf /etc/nginx/sites-available/hamkasb-ai
+    
+    # Remove default nginx site if it exists
+    sudo rm -f /etc/nginx/sites-enabled/default
+    
+    # Enable our site
+    sudo ln -sf /etc/nginx/sites-available/hamkasb-ai /etc/nginx/sites-enabled/hamkasb-ai
     
     # Test Nginx configuration
-    if nginx -t; then
+    if sudo nginx -t; then
         echo -e "${GREEN}[Server] Nginx configuration is valid${NC}"
-        systemctl reload nginx
+        sudo systemctl reload nginx || sudo systemctl restart nginx
     else
         echo -e "${RED}[Server] ERROR: Nginx configuration is invalid${NC}"
         exit 1

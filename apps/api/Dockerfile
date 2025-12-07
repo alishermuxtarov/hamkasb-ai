@@ -1,23 +1,37 @@
 # Production Dockerfile for Elysia API with Bun
 # Multi-stage build for optimal image size and security
+# Build context should be the project root to access workspace packages
 
 # Stage 1: Dependencies
 FROM oven/bun:1 AS deps
 WORKDIR /app
 
-# Copy dependency files
+# Copy root package files
 COPY package.json bun.lockb* ./
+COPY apps/api/package.json ./apps/api/
+
+# Install dependencies (bun will handle workspaces)
 RUN bun install --frozen-lockfile --production
 
 # Stage 2: Builder
 FROM oven/bun:1 AS builder
 WORKDIR /app
 
+# Copy root package files
+COPY package.json bun.lockb* tsconfig.base.json ./
+
+# Copy workspace packages if needed
+COPY packages ./packages 2>/dev/null || true
+
+# Copy API app
+COPY apps/api ./apps/api
+
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules 2>/dev/null || true
 
 # Build the application
+WORKDIR /app/apps/api
 RUN bun run build
 
 # Stage 3: Production runner
@@ -28,14 +42,15 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 elysiajs && \
     adduser --system --uid 1001 elysiajs
 
-# Copy necessary files
-COPY --from=builder --chown=elysiajs:elysiajs /app/dist ./dist
-COPY --from=builder --chown=elysiajs:elysiajs /app/package.json ./
+# Copy necessary files from API app
+COPY --from=builder --chown=elysiajs:elysiajs /app/apps/api/dist ./dist
+COPY --from=builder --chown=elysiajs:elysiajs /app/apps/api/package.json ./
 COPY --from=deps --chown=elysiajs:elysiajs /app/node_modules ./node_modules
+COPY --from=deps --chown=elysiajs:elysiajs /app/apps/api/node_modules ./node_modules 2>/dev/null || true
 
 # Copy Drizzle migrations and config
-COPY --from=builder --chown=elysiajs:elysiajs /app/src/lib/db/migrations ./src/lib/db/migrations
-COPY --from=builder --chown=elysiajs:elysiajs /app/drizzle.config.ts ./
+COPY --from=builder --chown=elysiajs:elysiajs /app/apps/api/src/lib/db/migrations ./src/lib/db/migrations
+COPY --from=builder --chown=elysiajs:elysiajs /app/apps/api/drizzle.config.ts ./
 
 # Switch to non-root user
 USER elysiajs

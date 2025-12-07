@@ -1,5 +1,6 @@
 # Production Dockerfile for Next.js Web App
 # Multi-stage build with standalone output for minimal image size
+# Build context should be the project root to access workspace packages
 
 # Stage 1: Dependencies
 FROM node:20-alpine AS deps
@@ -9,8 +10,12 @@ WORKDIR /app
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy dependency files
+# Copy root package.json and workspace files
 COPY package.json pnpm-lock.yaml* ./
+COPY apps/web/package.json ./apps/web/
+COPY packages/*/package.json ./packages/*/
+
+# Install dependencies (pnpm will handle workspaces)
 RUN pnpm install --frozen-lockfile --prod
 
 # Stage 2: Builder
@@ -20,11 +25,21 @@ WORKDIR /app
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
-# Copy dependencies and source
-COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+# Copy root package files
+COPY package.json pnpm-lock.yaml* tsconfig.base.json ./
 
-# Install all dependencies (including dev)
+# Copy workspace packages
+COPY packages ./packages
+
+# Copy web app
+COPY apps/web ./apps/web
+
+# Copy dependencies from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages/*/node_modules ./packages/*/node_modules 2>/dev/null || true
+
+# Install all dependencies (including dev) for build
+WORKDIR /app/apps/web
 RUN pnpm install --frozen-lockfile
 
 # Build Next.js application
@@ -44,10 +59,10 @@ ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     PORT=3000
 
-# Copy standalone output and static files
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+# Copy standalone output and static files from web app
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./public
 
 # Switch to non-root user
 USER nextjs

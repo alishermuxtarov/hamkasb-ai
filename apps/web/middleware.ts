@@ -6,8 +6,9 @@ export default createMiddleware({
   locales,
   // Локаль по умолчанию
   defaultLocale,
-  // Префикс локали в URL (false = /ru/page, true = /page)
-  localePrefix: 'as-needed',
+  // Префикс локали в URL - всегда показывать локаль в URL
+  // Это предотвращает конфликты с basePath и редиректами
+  localePrefix: 'always',
 })
 
 export const config = {

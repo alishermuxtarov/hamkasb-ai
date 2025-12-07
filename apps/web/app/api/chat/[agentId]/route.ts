@@ -1,4 +1,4 @@
-import { NextRequest } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { streamText } from 'ai'
 import { openai } from '@ai-sdk/openai'
 

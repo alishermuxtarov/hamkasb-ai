@@ -90,36 +90,57 @@ export async function POST(
           // Create a data stream in AI SDK format manually
           // Format: 0:"text chunk"\n for text chunks, d:{"finishReason":"stop"}\n for finish
           const encoder = new TextEncoder()
+          let streamController: ReadableStreamDefaultController<Uint8Array> | null = null
+          
           const stream = new ReadableStream({
-            async start(controller) {
-              try {
-                // Stream the message in chunks to simulate real streaming
-                const chunkSize = 30
-                for (let i = 0; i < message.length; i += chunkSize) {
-                  const chunk = message.slice(i, i + chunkSize)
-                  // Properly escape the chunk for JSON string inside the data stream
-                  // We need to escape: backslashes, quotes, newlines, etc.
-                  const escapedChunk = chunk
-                    .replace(/\\/g, '\\\\')  // Escape backslashes
-                    .replace(/"/g, '\\"')    // Escape quotes
-                    .replace(/\n/g, '\\n')   // Escape newlines
-                    .replace(/\r/g, '\\r')   // Escape carriage returns
-                    .replace(/\t/g, '\\t')   // Escape tabs
-                  // AI SDK data stream format: 0:"text"\n
-                  const data = `0:"${escapedChunk}"\n`
-                  controller.enqueue(encoder.encode(data))
-                  // Small delay to simulate streaming
-                  await new Promise(resolve => setTimeout(resolve, 15))
-                }
-                // Send finish signal in AI SDK format
-                controller.enqueue(encoder.encode('d:{"finishReason":"stop"}\n'))
-                controller.close()
-              } catch (error) {
-                console.error('[API Route /api/chat] Stream error:', error)
-                controller.error(error)
-              }
+            start(controller) {
+              streamController = controller
+              // Start streaming immediately
+              streamMessage()
             },
+            cancel() {
+              streamController = null
+            }
           })
+          
+          async function streamMessage() {
+            if (!streamController) return
+            
+            try {
+              // Stream the message in chunks to simulate real streaming
+              const chunkSize = 10 // Smaller chunks for better streaming effect
+              for (let i = 0; i < message.length; i += chunkSize) {
+                if (!streamController) break
+                
+                const chunk = message.slice(i, i + chunkSize)
+                // Properly escape the chunk for JSON string inside the data stream
+                // We need to escape: backslashes, quotes, newlines, etc.
+                const escapedChunk = chunk
+                  .replace(/\\/g, '\\\\')  // Escape backslashes
+                  .replace(/"/g, '\\"')    // Escape quotes
+                  .replace(/\n/g, '\\n')   // Escape newlines
+                  .replace(/\r/g, '\\r')   // Escape carriage returns
+                  .replace(/\t/g, '\\t')   // Escape tabs
+                // AI SDK data stream format: 0:"text"\n
+                const data = `0:"${escapedChunk}"\n`
+                streamController.enqueue(encoder.encode(data))
+                
+                // Flush immediately - don't wait too long
+                await new Promise(resolve => setTimeout(resolve, 10))
+              }
+              
+              if (streamController) {
+                // Send finish signal in AI SDK format
+                streamController.enqueue(encoder.encode('d:{"finishReason":"stop"}\n'))
+                streamController.close()
+              }
+            } catch (error) {
+              console.error('[API Route /api/chat] Stream error:', error)
+              if (streamController) {
+                streamController.error(error)
+              }
+            }
+          }
           
           return new Response(stream, {
             headers: {

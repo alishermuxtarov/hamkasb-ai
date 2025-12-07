@@ -20,15 +20,14 @@ WORKDIR /app
 # Copy root package files
 COPY package.json bun.lockb* tsconfig.base.json ./
 
-# Copy workspace packages if needed
-COPY packages ./packages 2>/dev/null || true
+# Copy workspace packages (if they exist in build context)
+COPY packages ./packages
 
 # Copy API app
 COPY apps/api ./apps/api
 
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules 2>/dev/null || true
 
 # Build the application
 WORKDIR /app/apps/api

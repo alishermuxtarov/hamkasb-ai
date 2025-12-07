@@ -36,7 +36,6 @@ COPY apps/web ./apps/web
 
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/packages/*/node_modules ./packages/*/node_modules 2>/dev/null || true
 
 # Install all dependencies (including dev) for build
 WORKDIR /app/apps/web

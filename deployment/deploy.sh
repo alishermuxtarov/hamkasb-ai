@@ -55,16 +55,8 @@ if ! ssh -o BatchMode=yes -o ConnectTimeout=5 "$SERVER_USER@$SERVER_HOST" "echo 
 fi
 print_success "SSH connection successful"
 
-# Upload .env.production if it exists locally
-if [ -f .env.production ]; then
-    print_step "Uploading .env.production to server..."
-    # Create directory first if it doesn't exist
-    ssh "$SERVER_USER@$SERVER_HOST" "sudo mkdir -p $DEPLOY_DIR && sudo chown $SERVER_USER:$SERVER_USER $DEPLOY_DIR" || true
-    scp .env.production "$SERVER_USER@$SERVER_HOST:$DEPLOY_DIR/.env.production" || {
-        print_error "Failed to upload .env.production. Continuing anyway..."
-    }
-    print_success ".env.production uploaded"
-else
+# Check if .env.production exists locally
+if [ ! -f .env.production ]; then
     print_error ".env.production not found locally. Make sure to create it before deployment."
     exit 1
 fi
@@ -147,37 +139,88 @@ else
     git clone "$REPO_URL" .
 fi
 
-# .env.production should be uploaded before this script runs
-# Check if .env.production exists
-if [ ! -f .env.production ]; then
-    echo -e "${RED}[Server] ERROR: .env.production file not found!${NC}"
-    echo -e "${YELLOW}[Server] Please upload .env.production file to $DEPLOY_DIR/.env.production${NC}"
-    echo -e "${YELLOW}[Server] The deploy script should upload it automatically from local machine${NC}"
+# .env.production will be uploaded after git operations
+echo -e "${YELLOW}[Server] Repository updated, ready for .env.production upload${NC}"
+ENDSSH
+
+# Upload .env.production after git operations
+print_step "Uploading .env.production to server..."
+scp .env.production "$SERVER_USER@$SERVER_HOST:$DEPLOY_DIR/.env.production" || {
+    print_error "Failed to upload .env.production"
+    exit 1
+}
+print_success ".env.production uploaded"
+
+# Continue with deployment
+ssh "$SERVER_USER@$SERVER_HOST" << 'ENDSSH'
+set -e
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+DEPLOY_DIR="/opt/hamkasb-ai"
+
+# Ensure we're in the deployment directory
+echo -e "${YELLOW}[Server] Changing to deployment directory: $DEPLOY_DIR${NC}"
+cd "$DEPLOY_DIR" || {
+    echo -e "${RED}[Server] ERROR: Cannot change to $DEPLOY_DIR${NC}"
+    exit 1
+}
+pwd
+ls -la docker-compose.production.yml || echo -e "${RED}[Server] ERROR: docker-compose.production.yml not found${NC}"
+
+# Add user to docker group if not already (requires new session, so we'll use sudo for now)
+if ! groups | grep -q docker; then
+    echo -e "${YELLOW}[Server] Adding user to docker group...${NC}"
+    sudo usermod -aG docker $USER || sudo usermod -aG docker alisher || true
+    # Use newgrp or sudo for docker commands
+    DOCKER_CMD="sudo docker"
+    COMPOSE_CMD="sudo docker compose"
+else
+    DOCKER_CMD="docker"
+    COMPOSE_CMD="docker compose"
+fi
+
+# Load environment variables from .env.production
+if [ -f "$DEPLOY_DIR/.env.production" ]; then
+    echo -e "${GREEN}[Server] Loading environment variables from .env.production${NC}"
+    set -a
+    source "$DEPLOY_DIR/.env.production"
+    set +a
+else
+    echo -e "${RED}[Server] ERROR: .env.production not found!${NC}"
     exit 1
 fi
-echo -e "${GREEN}[Server] .env.production file found${NC}"
 
 # Stop existing containers
 echo -e "${YELLOW}[Server] Stopping existing containers...${NC}"
-docker compose -f docker-compose.production.yml down || docker-compose -f docker-compose.production.yml down || true
+cd "$DEPLOY_DIR"
+$COMPOSE_CMD --env-file .env.production -f docker-compose.production.yml down || docker-compose --env-file .env.production -f docker-compose.production.yml down || true
 
 # Build and start containers
 echo -e "${YELLOW}[Server] Building Docker images...${NC}"
-docker compose -f docker-compose.production.yml build --no-cache || docker-compose -f docker-compose.production.yml build --no-cache
+cd "$DEPLOY_DIR"
+$COMPOSE_CMD --env-file .env.production -f docker-compose.production.yml build --no-cache || docker-compose --env-file .env.production -f docker-compose.production.yml build --no-cache
 
 echo -e "${YELLOW}[Server] Starting containers...${NC}"
-docker compose -f docker-compose.production.yml up -d || docker-compose -f docker-compose.production.yml up -d
+cd "$DEPLOY_DIR"
+$COMPOSE_CMD --env-file .env.production -f docker-compose.production.yml up -d || docker-compose --env-file .env.production -f docker-compose.production.yml up -d
 
 # Wait for services to be healthy
 echo -e "${YELLOW}[Server] Waiting for services to start...${NC}"
 sleep 10
 
 # Check container status
-if docker ps | grep -q hamkasb-api && docker ps | grep -q hamkasb-web; then
+if $DOCKER_CMD ps | grep -q hamkasb-api && $DOCKER_CMD ps | grep -q hamkasb-web; then
     echo -e "${GREEN}[Server] Containers are running${NC}"
 else
     echo -e "${RED}[Server] ERROR: Containers failed to start${NC}"
-    docker compose -f docker-compose.production.yml logs || docker-compose -f docker-compose.production.yml logs
+    cd "$DEPLOY_DIR"
+    $COMPOSE_CMD -f docker-compose.production.yml logs || docker-compose -f docker-compose.production.yml logs
     exit 1
 fi
 
@@ -213,7 +256,7 @@ fi
 
 # Run database migrations
 echo -e "${YELLOW}[Server] Running database migrations...${NC}"
-docker exec hamkasb-api bun run db:migrate || echo -e "${YELLOW}[Server] Warning: Migration failed or not needed${NC}"
+$DOCKER_CMD exec hamkasb-api bun run db:migrate || echo -e "${YELLOW}[Server] Warning: Migration failed or not needed${NC}"
 
 echo -e "${GREEN}╔════════════════════════════════════════════════╗${NC}"
 echo -e "${GREEN}║     Deployment completed successfully!         ║${NC}"
@@ -225,7 +268,7 @@ echo -e "  ${GREEN}Demo App:${NC}     http://hamkasb-ai.uz/demo"
 echo -e "  ${GREEN}API:${NC}          http://hamkasb-ai.uz/api"
 echo ""
 echo -e "${BLUE}Container Status:${NC}"
-docker ps --filter name=hamkasb
+$DOCKER_CMD ps --filter name=hamkasb
 
 ENDSSH
 

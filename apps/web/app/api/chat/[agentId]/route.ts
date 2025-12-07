@@ -95,7 +95,7 @@ export async function POST(
             async start(controller) {
               try {
                 // Stream the message in chunks to simulate real streaming
-                const chunkSize = 10 // Smaller chunks for better streaming effect
+                const chunkSize = 5 // Very small chunks for visible streaming effect
                 for (let i = 0; i < message.length; i += chunkSize) {
                   const chunk = message.slice(i, i + chunkSize)
                   // Properly escape the chunk for JSON string inside the data stream
@@ -110,8 +110,8 @@ export async function POST(
                   const data = `0:"${escapedChunk}"\n`
                   controller.enqueue(encoder.encode(data))
                   
-                  // Flush immediately - don't wait too long
-                  await new Promise(resolve => setTimeout(resolve, 10))
+                  // Longer delay to make streaming more visible and ensure chunks are sent separately
+                  await new Promise(resolve => setTimeout(resolve, 50))
                 }
                 
                 // Send finish signal in AI SDK format

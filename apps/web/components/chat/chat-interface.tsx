@@ -66,6 +66,7 @@ export function ChatInterface({
       body: {
         sessionId: selectedSessionId,
       },
+      stream: false, // Disable streaming - use regular JSON responses
       onError: (error) => {
         console.error('Chat error:', error)
       },

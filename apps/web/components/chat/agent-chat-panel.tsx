@@ -101,10 +101,11 @@ export function AgentChatPanel({
         sessionId: forceNewSession ? undefined : (selectedSessionId || undefined),
         forceNew: forceNewSession,
       },
+      stream: false, // Disable streaming - use regular JSON responses
       onError: (error) => {
         console.error('Chat error:', error)
       },
-      onFinish: () => {
+      onFinish: (message) => {
         // После отправки сообщения сбрасываем флаг принудительного создания
         if (forceNewSession) {
           setForceNewSession(false)

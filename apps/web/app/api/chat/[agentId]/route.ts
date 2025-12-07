@@ -81,60 +81,13 @@ export async function POST(
             sessionId: data.sessionId,
           })
           
-          // Return as stream for useChat compatibility
-          // useChat expects AI SDK format (data stream)
-          // We'll create a proper AI SDK data stream from the backend message
-          const message = data.message || 'Нет ответа от агента'
-          console.log('[API Route /api/chat] Creating AI SDK stream for backend message, length:', message.length)
-          
-          // Create a data stream in AI SDK format manually
-          // Format: 0:"text chunk"\n for text chunks, d:{"finishReason":"stop"}\n for finish
-          const encoder = new TextEncoder()
-          
-          const stream = new ReadableStream({
-            async start(controller) {
-              try {
-                // Stream the message in chunks to simulate real streaming
-                const chunkSize = 5 // Very small chunks for visible streaming effect
-                for (let i = 0; i < message.length; i += chunkSize) {
-                  const chunk = message.slice(i, i + chunkSize)
-                  // Properly escape the chunk for JSON string inside the data stream
-                  // We need to escape: backslashes, quotes, newlines, etc.
-                  const escapedChunk = chunk
-                    .replace(/\\/g, '\\\\')  // Escape backslashes
-                    .replace(/"/g, '\\"')    // Escape quotes
-                    .replace(/\n/g, '\\n')   // Escape newlines
-                    .replace(/\r/g, '\\r')   // Escape carriage returns
-                    .replace(/\t/g, '\\t')   // Escape tabs
-                  // AI SDK data stream format: 0:"text"\n
-                  const data = `0:"${escapedChunk}"\n`
-                  controller.enqueue(encoder.encode(data))
-                  
-                  // Longer delay to make streaming more visible and ensure chunks are sent separately
-                  await new Promise(resolve => setTimeout(resolve, 50))
-                }
-                
-                // Send finish signal in AI SDK format
-                controller.enqueue(encoder.encode('d:{"finishReason":"stop"}\n'))
-                controller.close()
-              } catch (error) {
-                console.error('[API Route /api/chat] Stream error:', error)
-                controller.error(error)
-              }
-            },
-          })
-          
-          return new Response(stream, {
-            headers: {
-              'Content-Type': 'text/plain; charset=utf-8',
-              'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
-              'Pragma': 'no-cache',
-              'Connection': 'keep-alive',
-              'X-Accel-Buffering': 'no',
-              'Transfer-Encoding': 'chunked',
-              // Disable Cloudflare buffering if possible
-              'CF-Ray': '',
-            },
+          // Return JSON response directly (no streaming)
+          // useChat can handle JSON responses when stream is disabled
+          return NextResponse.json({
+            message: data.message || 'Нет ответа от агента',
+            sessionId: data.sessionId,
+            toolCalls: data.toolCalls || [],
+            toolResults: data.toolResults || [],
           })
         } else {
           // Log error response

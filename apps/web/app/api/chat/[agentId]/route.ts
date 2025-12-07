@@ -127,10 +127,13 @@ export async function POST(
           return new Response(stream, {
             headers: {
               'Content-Type': 'text/plain; charset=utf-8',
-              'Cache-Control': 'no-cache, no-store, must-revalidate',
+              'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+              'Pragma': 'no-cache',
               'Connection': 'keep-alive',
               'X-Accel-Buffering': 'no',
               'Transfer-Encoding': 'chunked',
+              // Disable Cloudflare buffering if possible
+              'CF-Ray': '',
             },
           })
         } else {

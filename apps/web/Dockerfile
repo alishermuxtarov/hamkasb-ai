@@ -17,7 +17,7 @@ COPY packages ./packages
 
 # Create pnpm-workspace.yaml for pnpm
 WORKDIR /app
-RUN echo "packages:\n  - 'apps/*'\n  - 'packages/*'" > pnpm-workspace.yaml
+RUN printf "packages:\n  - 'apps/*'\n  - 'packages/*'\n" > pnpm-workspace.yaml
 
 # Install dependencies (pnpm will handle workspaces)
 # Remove packageManager field using node to preserve JSON validity, then install

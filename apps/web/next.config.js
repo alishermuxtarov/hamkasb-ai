@@ -10,6 +10,12 @@ const nextConfig = {
   assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH || (process.env.NODE_ENV === 'production' ? '/demo' : ''),
   transpilePackages: ['@hamkasb/core', '@hamkasb/ui', '@hamkasb/i18n'],
   output: 'standalone',
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: false,
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',

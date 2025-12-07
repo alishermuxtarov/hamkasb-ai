@@ -29,6 +29,10 @@ COPY apps/api ./apps/api
 # Copy dependencies from deps stage
 COPY --from=deps /app/node_modules ./node_modules
 
+# Install all dependencies (including dev) for build
+WORKDIR /app
+RUN bun install --frozen-lockfile
+
 # Build the application
 WORKDIR /app/apps/api
 RUN bun run build

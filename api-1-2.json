@@ -1,0 +1,495 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Hamkasb.AI API",
+    "description": "API для Hamkasb.AI - AI Коллега для банков и организаций. Предоставляет интерфейсы для работы с AI-агентами, управления документами и чатом.",
+    "version": "0.1.0",
+    "contact": {
+      "name": "Hamkasb.AI Team"
+    }
+  },
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Проверка работоспособности API"
+    },
+    {
+      "name": "Chat",
+      "description": "Чат с AI-агентами"
+    },
+    {
+      "name": "Librarian",
+      "description": "Агент \"Библиотекарь\" - управление документами"
+    }
+  ],
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "Локальный сервер разработки"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "tags": [
+          "Health"
+        ],
+        "summary": "Проверка работоспособности API",
+        "description": "Возвращает статус API и текущее время",
+        "responses": {
+          "200": {
+            "description": "API работает",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "ok",
+                  "timestamp": "2025-12-06T20:00:00.000Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat/{agentId}": {
+      "post": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "agentId",
+            "required": true
+          }
+        ],
+        "operationId": "postChatByAgentId",
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Отправить сообщение агенту",
+        "description": "Отправляет сообщение указанному AI-агенту и получает ответ. Если sessionId не указан, создается новая сессия чата.",
+        "examples": [
+          {
+            "description": "Новое сообщение в новой сессии",
+            "value": {
+              "message": "Найди документы о кредитовании"
+            }
+          },
+          {
+            "description": "Продолжение существующей сессии",
+            "value": {
+              "message": "Расскажи подробнее",
+              "sessionId": "abc123-def456-ghi789"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  },
+                  "sessionId": {
+                    "type": "string"
+                  },
+                  "userId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "message"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  },
+                  "sessionId": {
+                    "type": "string"
+                  },
+                  "userId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "message"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  },
+                  "sessionId": {
+                    "type": "string"
+                  },
+                  "userId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "message"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/chat/{agentId}/sessions": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "agentId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "userId",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          }
+        ],
+        "operationId": "getChatByAgentIdSessions",
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Получить список сессий чата",
+        "description": "Возвращает список сессий чата для указанного агента. Можно отфильтровать по userId и ограничить количество результатов.",
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/chat/{agentId}/sessions/{sessionId}": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "agentId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "sessionId",
+            "required": true
+          }
+        ],
+        "operationId": "getChatByAgentIdSessionsBySessionId",
+        "responses": {
+          "200": {}
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "agentId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "sessionId",
+            "required": true
+          }
+        ],
+        "operationId": "deleteChatByAgentIdSessionsBySessionId",
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/agents/librarian/documents/upload": {
+      "post": {
+        "operationId": "postAgentsLibrarianDocumentsUpload",
+        "tags": [
+          "Librarian"
+        ],
+        "summary": "Загрузить документ",
+        "description": "Загружает документ (PDF или DOCX) в библиотеку. Документ автоматически обрабатывается: извлекается текст, создаются chunks, генерируются embeddings.",
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/agents/librarian/documents": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "catalogId",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "clientId",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "number"
+            },
+            "in": "query",
+            "name": "limit",
+            "required": false
+          }
+        ],
+        "operationId": "getAgentsLibrarianDocuments",
+        "tags": [
+          "Librarian"
+        ],
+        "summary": "Получить список документов",
+        "description": "Возвращает список документов с возможностью фильтрации по каталогу или клиенту.",
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/agents/librarian/documents/{id}": {
+      "get": {
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "operationId": "getAgentsLibrarianDocumentsById",
+        "tags": [
+          "Librarian"
+        ],
+        "summary": "Получить документ по ID",
+        "description": "Возвращает полную информацию о документе, включая содержимое и метаданные.",
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/agents/librarian/documents/search": {
+      "post": {
+        "parameters": [],
+        "operationId": "postAgentsLibrarianDocumentsSearch",
+        "tags": [
+          "Librarian"
+        ],
+        "summary": "Поиск документов",
+        "description": "Выполняет семантический поиск документов по векторной базе данных. Использует embeddings для поиска релевантных документов.",
+        "examples": [
+          {
+            "description": "Поиск документов о кредитовании",
+            "value": {
+              "query": "документы о кредитовании фермеров",
+              "limit": 5
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "catalogId": {
+                    "type": "string"
+                  },
+                  "limit": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "query"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "catalogId": {
+                    "type": "string"
+                  },
+                  "limit": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "query"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "string"
+                  },
+                  "catalogId": {
+                    "type": "string"
+                  },
+                  "limit": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "query"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {}
+        }
+      }
+    },
+    "/agents/librarian/catalogs": {
+      "post": {
+        "parameters": [],
+        "operationId": "postAgentsLibrarianCatalogs",
+        "tags": [
+          "Librarian"
+        ],
+        "summary": "Создать каталог",
+        "description": "Создает новый каталог для организации документов. Каталоги могут быть вложенными (через parentId).",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "parentId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "parentId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "parentId": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {}
+        }
+      },
+      "get": {
+        "operationId": "getAgentsLibrarianCatalogs",
+        "tags": [
+          "Librarian"
+        ],
+        "summary": "Получить список каталогов",
+        "description": "Возвращает список всех каталогов документов.",
+        "responses": {
+          "200": {}
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {}
+  }
+}

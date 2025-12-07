@@ -1,0 +1,99 @@
+{
+  "common": {
+    "welcome": "Xush kelibsiz",
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "create": "Yaratish",
+    "search": "Qidirish",
+    "close": "Yopish",
+    "back": "Orqaga",
+    "next": "Keyingi",
+    "previous": "Oldingi"
+  },
+  "sidebar": {
+    "dashboard": "Boshqaruv paneli",
+    "documents": "Hujjatlar",
+    "docflow": "Hujjatlar aylanishi",
+    "clients": "Mijozlar",
+    "finance": "Moliya",
+    "hr": "Kadrlar",
+    "support": "Qo'llab-quvvatlash",
+    "pr": "PR Mutaxassisi",
+    "designer": "Dizayner",
+    "smm": "SMM Mutaxassisi"
+  },
+  "navbar": {
+    "profile": "Profil",
+    "logout": "Chiqish",
+    "settings": "Sozlamalar"
+  },
+  "agents": {
+    "librarian": {
+      "name": "Kutubxonachi",
+      "description": "Tashkilot hujjatlari va fayllarini boshqarish"
+    },
+    "docflow": {
+      "name": "Hujjatlar aylanishi",
+      "description": "Kiruvchi va chiquvchi yozishmalar bilan ishlash"
+    },
+    "kyc": {
+      "name": "Mijozlar",
+      "description": "Mijozlar va ularning ma'lumotlari bilan ishlash"
+    },
+    "financier": {
+      "name": "Moliya mutaxassisi",
+      "description": "Moliya tahlili va hisobotlar"
+    },
+    "hr": {
+      "name": "Kadrlar",
+      "description": "Xodimlar bilan ishlash"
+    },
+    "support": {
+      "name": "Qo'llab-quvvatlash",
+      "description": "Mijozlarga yordam"
+    },
+    "pr": {
+      "name": "PR Mutaxassisi",
+      "description": "Jamoatchilik bilan aloqalar va kommunikatsiyalar"
+    },
+    "designer": {
+      "name": "Dizayner",
+      "description": "Vizual kontent yaratish"
+    },
+    "smm": {
+      "name": "SMM Mutaxassisi",
+      "description": "Ijtimoiy tarmoqlar va marketing"
+    }
+  },
+  "dashboard": {
+    "title": "Boshqaruv paneli",
+    "welcome": "Hamkasb.AI ga xush kelibsiz",
+    "selectAgent": "Ishlash uchun agentni tanlang",
+    "startChat": "Chatni boshlash",
+    "viewDetails": "Batafsil"
+  },
+  "documents": {
+    "title": "Hujjatlar",
+    "upload": "Yuklash",
+    "search": "Hujjatlarni qidirish",
+    "catalogs": "Kataloglar",
+    "recent": "Yaqinda",
+    "all": "Barcha hujjatlar"
+  },
+  "chat": {
+    "send": "Yuborish",
+    "placeholder": "Xabar kiriting...",
+    "sessions": "Chat tarixi",
+    "newSession": "Yangi chat",
+    "noSessions": "Saqlangan chatlar yo'q",
+    "deleteSession": "Chatni o'chirish"
+  },
+  "mock": {
+    "comingSoon": "Tez orada",
+    "description": "Bu sahifa hozir ishlab chiqilmoqda va tez orada mavjud bo'ladi."
+  }
+}

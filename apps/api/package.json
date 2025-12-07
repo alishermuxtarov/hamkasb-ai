@@ -1,0 +1,47 @@
+{
+  "name": "@hamkasb/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run src/index.ts",
+    "build": "bun build src/index.ts --outdir ./dist --target bun",
+    "start": "bun run dist/index.js",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "test:qdrant": "bun run scripts/test-qdrant-search.ts",
+    "clear:qdrant": "bun run scripts/clear-qdrant.ts"
+  },
+  "dependencies": {
+    "elysia": "^1.1.0",
+    "@elysiajs/cors": "^1.1.0",
+    "@elysiajs/swagger": "^1.1.0",
+    "ai": "^4.0.0",
+    "@ai-sdk/openai": "^1.0.0",
+    "zod": "^3.24.1",
+    "pg": "^8.13.1",
+    "drizzle-orm": "^0.37.0",
+    "postgres": "^3.4.5",
+    "@qdrant/js-client-rest": "^1.9.0",
+    "@vercel/blob": "^0.20.0",
+    "@vercel/postgres": "^0.9.0",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/pg": "^8.11.0",
+    "@types/pdf-parse": "^1.1.4",
+    "drizzle-kit": "^0.30.0",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.3.3",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0"
+  }
+}
+

@@ -1,0 +1,28 @@
+version: '3.8'
+
+# Этот файл оставлен для справки
+# Если вы хотите использовать Docker вместо локального Postgres,
+# переименуйте этот файл в docker-compose.yml
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: hamkasb-postgres
+    environment:
+      POSTGRES_USER: hamkasb
+      POSTGRES_PASSWORD: hamkasb_dev
+      POSTGRES_DB: hamkasb_ai
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hamkasb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+

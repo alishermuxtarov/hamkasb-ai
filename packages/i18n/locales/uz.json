@@ -1,0 +1,11 @@
+{
+  "common": {
+    "welcome": "Xush kelibsiz",
+    "loading": "Yuklanmoqda...",
+    "error": "Xatolik",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish"
+  }
+}
+

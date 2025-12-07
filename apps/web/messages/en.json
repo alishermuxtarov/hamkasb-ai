@@ -1,0 +1,99 @@
+{
+  "common": {
+    "welcome": "Welcome",
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "documents": "Documents",
+    "docflow": "Document Flow",
+    "clients": "Clients",
+    "finance": "Finance",
+    "hr": "HR",
+    "support": "Support",
+    "pr": "PR Specialist",
+    "designer": "Designer",
+    "smm": "SMM Specialist"
+  },
+  "navbar": {
+    "profile": "Profile",
+    "logout": "Logout",
+    "settings": "Settings"
+  },
+  "agents": {
+    "librarian": {
+      "name": "Librarian",
+      "description": "Managing organization documents and files"
+    },
+    "docflow": {
+      "name": "Document Flow",
+      "description": "Working with incoming and outgoing correspondence"
+    },
+    "kyc": {
+      "name": "Clients",
+      "description": "Working with clients and their data"
+    },
+    "financier": {
+      "name": "Financier",
+      "description": "Financial analysis and reporting"
+    },
+    "hr": {
+      "name": "HR",
+      "description": "Human resources management"
+    },
+    "support": {
+      "name": "Support",
+      "description": "Customer support"
+    },
+    "pr": {
+      "name": "PR Specialist",
+      "description": "Public relations and communications"
+    },
+    "designer": {
+      "name": "Designer",
+      "description": "Visual content creation"
+    },
+    "smm": {
+      "name": "SMM Specialist",
+      "description": "Social media and marketing"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to Hamkasb.AI",
+    "selectAgent": "Select an agent to work with",
+    "startChat": "Start Chat",
+    "viewDetails": "View Details"
+  },
+  "documents": {
+    "title": "Documents",
+    "upload": "Upload",
+    "search": "Search documents",
+    "catalogs": "Catalogs",
+    "recent": "Recent",
+    "all": "All documents"
+  },
+  "chat": {
+    "send": "Send",
+    "placeholder": "Type a message...",
+    "sessions": "Chat History",
+    "newSession": "New Chat",
+    "noSessions": "No saved chats",
+    "deleteSession": "Delete chat"
+  },
+  "mock": {
+    "comingSoon": "Coming Soon",
+    "description": "This page is under development and will be available soon."
+  }
+}

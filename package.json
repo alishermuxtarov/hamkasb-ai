@@ -1,0 +1,34 @@
+{
+  "name": "hamkasb-ai",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hamkasb.AI - AI Коллега для банков и организаций",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"bun run dev:api\" \"bun run dev:web\"",
+    "dev:api": "cd apps/api && bun run dev",
+    "dev:web": "cd apps/web && pnpm dev",
+    "build": "bun run build:api && bun run build:web",
+    "build:api": "cd apps/api && bun run build",
+    "build:web": "cd apps/web && pnpm build",
+    "lint": "bun run lint:api && bun run lint:web",
+    "lint:api": "cd apps/api && bun run lint",
+    "lint:web": "cd apps/web && pnpm lint",
+    "type-check": "bun run type-check:api && bun run type-check:web",
+    "type-check:api": "cd apps/api && bunx tsc --noEmit",
+    "type-check:web": "cd apps/web && pnpm type-check"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "bun": ">=1.0.0",
+    "node": ">=18.0.0"
+  },
+  "packageManager": "bun@1.0.0"
+}
+

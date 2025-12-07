@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "ignorePatterns": ["node_modules", "dist", ".next", "build"],
+  "extends": ["eslint:recommended"],
+  "rules": {
+    "no-unused-vars": "warn",
+    "no-console": "off"
+  }
+}
+

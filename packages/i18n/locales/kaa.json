@@ -1,0 +1,11 @@
+{
+  "common": {
+    "welcome": "Xosh keldiniz",
+    "loading": "Jukleniwde...",
+    "error": "Qatelik",
+    "save": "Saqlaw",
+    "cancel": "Bekor etiw",
+    "delete": "O'shiriw"
+  }
+}
+

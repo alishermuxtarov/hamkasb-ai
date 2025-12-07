@@ -1,0 +1,99 @@
+{
+  "common": {
+    "welcome": "Xosh keldiniz",
+    "loading": "Jukleniwde...",
+    "error": "Qatelik",
+    "save": "Saqlaw",
+    "cancel": "Bekor etiw",
+    "delete": "O'shiriw",
+    "edit": "Tahrirlew",
+    "create": "Jaratıw",
+    "search": "Izlew",
+    "close": "Jabıw",
+    "back": "Artqa",
+    "next": "Keyingisi",
+    "previous": "Aldıng'ısı"
+  },
+  "sidebar": {
+    "dashboard": "Basqarıw paneli",
+    "documents": "Hujjatlar",
+    "docflow": "Hujjatlar aylanısı",
+    "clients": "Mijozlar",
+    "finance": "Maliya",
+    "hr": "Kadrlar",
+    "support": "Qollaw",
+    "pr": "PR Mutaxassisi",
+    "designer": "Dizayner",
+    "smm": "SMM Mutaxassisi"
+  },
+  "navbar": {
+    "profile": "Profil",
+    "logout": "Shıǧıw",
+    "settings": "Sozlamalar"
+  },
+  "agents": {
+    "librarian": {
+      "name": "Kitapxanashı",
+      "description": "U'yimlik hujjatları hám faylların basqarıw"
+    },
+    "docflow": {
+      "name": "Hujjatlar aylanısı",
+      "description": "Kirip atırǧan hám shıǧıp atırǧan jazıwmalar menen islew"
+    },
+    "kyc": {
+      "name": "Mijozlar",
+      "description": "Mijozlar hám olardın maǧlıwmatları menen islew"
+    },
+    "financier": {
+      "name": "Maliya mutaxassisi",
+      "description": "Maliya tahlili hám esabatlar"
+    },
+    "hr": {
+      "name": "Kadrlar",
+      "description": "Xızmetkerler menen islew"
+    },
+    "support": {
+      "name": "Qollaw",
+      "description": "Mijozlarga jardem"
+    },
+    "pr": {
+      "name": "PR Mutaxassisi",
+      "description": "Jamaatlıq menen baylanıslar hám kommunikatsiyalar"
+    },
+    "designer": {
+      "name": "Dizayner",
+      "description": "Vizual kontent jaratıw"
+    },
+    "smm": {
+      "name": "SMM Mutaxassisi",
+      "description": "Ijtimoiy tarmaqlar hám marketing"
+    }
+  },
+  "dashboard": {
+    "title": "Basqarıw paneli",
+    "welcome": "Hamkasb.AI ga xosh keldiniz",
+    "selectAgent": "Ishlew ushın agentti tańlań",
+    "startChat": "Chatti baslaw",
+    "viewDetails": "Tolıq maǧlıwmat"
+  },
+  "documents": {
+    "title": "Hujjatlar",
+    "upload": "Juklew",
+    "search": "Hujjatlardı izlew",
+    "catalogs": "Kataloglar",
+    "recent": "Jaqında",
+    "all": "Barlıq hujjatlar"
+  },
+  "chat": {
+    "send": "Jiberiw",
+    "placeholder": "Xabar kirgiziw...",
+    "sessions": "Chat tariyxı",
+    "newSession": "Jańa chat",
+    "noSessions": "Saqlanǧan chatlar joq",
+    "deleteSession": "Chatti o'shiriw"
+  },
+  "mock": {
+    "comingSoon": "Tez arada",
+    "description": "Bul bet házir islep shıǧılıp atırǧan hám tez arada mavjud boladı."
+  }
+}

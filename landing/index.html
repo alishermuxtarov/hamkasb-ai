@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamkasb AI — Ваш цифровой отдел сотрудников</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-strong {
+             background: rgba(255, 255, 255, 0.08);
+             backdrop-filter: blur(12px);
+             border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #00D4FF 0%, #00E676 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 212, 255, 0.15);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0A2540',
+                        secondary: '#00D4FF',
+                        accent: '#00E676',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-primary text-white overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="cpu" class="text-secondary w-8 h-8"></i>
+                    <span class="text-xl font-bold tracking-tight">Hamkasb AI</span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
+                    <a href="#problem" class="hover:text-secondary transition">Зачем AI?</a>
+                    <a href="#how-it-works" class="hover:text-secondary transition">Как работает?</a>
+                    <a href="#agents" class="hover:text-secondary transition">Агенты</a>
+                    <a href="#tech" class="hover:text-secondary transition">Технологии</a>
+                    <a href="#team" class="hover:text-secondary transition">Команда</a>
+                    <a href="#roadmap" class="hover:text-secondary transition">План</a>
+                </div>
+                <a href="#contact" class="bg-secondary hover:bg-cyan-400 text-primary px-5 py-2 rounded-full font-semibold text-sm transition shadow-lg shadow-cyan-500/20">
+                    Связаться
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-24 pb-6 overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm font-medium text-secondary mb-8 border border-secondary/20">
+                <span class="w-2 h-2 bg-accent rounded-full animate-ping"></span>
+                Проект для AI500! Hackathon 2025
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
+                Ваши новые <br>
+                <span class="gradient-text">AI-коллеги</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+                <span class="text-secondary font-semibold">Делегируйте рутину AI-агентам,</span> которые глубоко понимают контекст ваших данных и работают как единый слаженный механизм
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="#agents" class="bg-secondary hover:bg-cyan-400 text-primary px-8 py-4 rounded-lg font-bold text-lg transition shadow-xl shadow-cyan-500/20 flex items-center justify-center gap-2">
+                    Познакомиться с агентами <i data-lucide="arrow-down" class="w-5 h-5"></i>
+                </a>
+                <a href="#tech" class="glass hover:bg-white/10 text-white px-8 py-4 rounded-lg font-semibold text-lg transition border border-white/10">
+                    Как это работает?
+                </a>
+            </div>
+
+            <!-- Video Demo -->
+            <div class="relative w-full max-w-4xl mx-auto mb-16 group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-secondary to-accent rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
+                <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-dark/80 backdrop-blur-sm">
+                    <video controls class="w-full h-auto block rounded-2xl" style="max-height: 600px;">
+                        <source src="Hamkasb-AI-upscaled.mp4" type="video/mp4">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                </div>
+            </div>
+
+            <!-- Hero Visual / Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto text-left">
+                <div class="glass p-4 rounded-xl border-t border-white/10 flex items-center gap-3 hover:bg-white/5 transition">
+                    <div class="bg-secondary/20 p-2 rounded-lg"><i data-lucide="users" class="w-5 h-5 text-secondary"></i></div>
+                    <div class="text-smm font-medium text-white leading-tight">10 Специализированных<br>ИИ агентов</div>
+                </div>
+                <div class="glass p-4 rounded-xl border-t border-white/10 flex items-center gap-3 hover:bg-white/5 transition">
+                    <div class="bg-blue-500/20 p-2 rounded-lg"><i data-lucide="message-circle" class="w-5 h-5 text-blue-400"></i></div>
+                    <div class="text-smm font-medium text-white leading-tight">Простой чат<br>интерфейс</div>
+                </div>
+                <div class="glass p-4 rounded-xl border-t border-white/10 flex items-center gap-3 hover:bg-white/5 transition">
+                    <div class="bg-green-500/20 p-2 rounded-lg"><i data-lucide="globe" class="w-5 h-5 text-green-400"></i></div>
+                    <div class="text-smm font-medium text-white leading-tight">Поддержка<br>узбекского языка</div>
+                </div>
+                <div class="glass p-4 rounded-xl border-t border-white/10 flex items-center gap-3 hover:bg-white/5 transition">
+                    <div class="bg-red-500/20 p-2 rounded-lg"><i data-lucide="shield-check" class="w-5 h-5 text-red-400"></i></div>
+                    <div class="text-smm font-medium text-white leading-tight">On-Premise<br>безопасность</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section id="problem" class="py-24 bg-dark/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Почему организациям нужны AI-коллеги?</h2>
+                <p class="text-gray-400 max-w-3xl mx-auto">ИИ имеет большой контекст данных вашей организации, поможет автоматизировать рутинные задачи, экономит время ваших сотрудников, ускоряет их и дает возможность сконцентрироваться на стратегических задачах вместо рутинных.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1: Save Time -->
+                <div class="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-secondary/30 transition group">
+                    <div class="bg-secondary/10 p-4 rounded-xl w-fit mb-6 group-hover:bg-secondary/20 transition">
+                        <i data-lucide="clock" class="w-8 h-8 text-secondary"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Экономия времени</h3>
+                    <p class="text-gray-400">Сотрудники теряют время на поиск документов и информации в них, а ИИ анализирует и находит точный ответ за секунды.</p>
+                </div>
+
+                <!-- Card 2: Deep Analysis (Analysis) -->
+                <div class="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-purple-400/30 transition group">
+                    <div class="bg-purple-500/10 p-4 rounded-xl w-fit mb-6 group-hover:bg-purple-500/20 transition">
+                        <i data-lucide="pie-chart" class="w-8 h-8 text-purple-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Анализ данных</h3>
+                    <p class="text-gray-400">Анализ больших разрозненных данных и ручное создание отчетов — сложная задача. ИИ автоматизирует это, предоставляя аналитику мгновенно.</p>
+                </div>
+
+                <!-- Card 3: Context (Context) -->
+                <div class="p-8 rounded-2xl bg-white/5 border border-white/10 hover:border-emerald-400/30 transition group">
+                    <div class="bg-emerald-500/10 p-4 rounded-xl w-fit mb-6 group-hover:bg-emerald-500/20 transition">
+                        <i data-lucide="database" class="w-8 h-8 text-emerald-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">ИИ всегда в контексте</h3>
+                    <p class="text-gray-400">ИИ имеет доступ к огромному массиву векторизированных данных, которые легко подвергаются поиску, обработке и анализу в любой момент.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works & Security Section -->
+    <section id="how-it-works" class="py-12 bg-primary relative overflow-hidden border-t border-white/5">
+        <!-- 1. Workflow -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-24">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Как это работает?</h2>
+                <p class="text-gray-400">Полный цикл обработки данных: от интеграции до готового ответа.</p>
+            </div>
+            
+            <!-- Steps Visualization -->
+            <div class="relative">
+                <!-- Connecting Line -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-secondary/30 to-transparent -translate-y-1/2 z-0"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative z-10">
+                    <!-- Step 1: DWH -->
+                    <div class="flex flex-col items-center group">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center border-2 border-secondary/50 mb-4 group-hover:scale-110 transition z-10 shadow-[0_0_20px_rgba(0,212,255,0.2)]">
+                            <i data-lucide="database" class="w-6 h-6 text-secondary"></i>
+                        </div>
+                        <h4 class="font-bold mb-1">Data Warehouse</h4>
+                        <p class="text-xs text-center text-gray-400 max-w-[150px]">Интеграция ваших данных в защищенное хранилище</p>
+                    </div>
+                    
+                    <!-- Step 2: Vectorization -->
+                    <div class="flex flex-col items-center group">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center border-2 border-secondary/50 mb-4 group-hover:scale-110 transition z-10 shadow-[0_0_20px_rgba(0,212,255,0.2)]">
+                            <i data-lucide="cpu" class="w-6 h-6 text-secondary"></i>
+                        </div>
+                        <h4 class="font-bold mb-1">Векторизация</h4>
+                        <p class="text-xs text-center text-gray-400 max-w-[150px]">Обработка файлов и подготовка к RAG поиску</p>
+                    </div>
+
+                    <!-- Step 3: Setup -->
+                    <div class="flex flex-col items-center group">
+                        <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center border-2 border-secondary/50 mb-4 group-hover:scale-110 transition z-10 shadow-[0_0_20px_rgba(0,212,255,0.2)]">
+                            <i data-lucide="users" class="w-6 h-6 text-secondary"></i>
+                        </div>
+                        <h4 class="font-bold mb-1">Настройка доступов</h4>
+                        <p class="text-xs text-center text-gray-400 max-w-[150px]">Интеграция пользователей и прав (RBAC)</p>
+                    </div>
+
+                    <!-- Step 4: Start -->
+                    <div class="flex flex-col items-center group">
+                        <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center border-2 border-accent mb-4 group-hover:scale-110 transition z-10 shadow-[0_0_20px_rgba(0,230,118,0.4)]">
+                            <i data-lucide="play" class="w-6 h-6 text-accent"></i>
+                        </div>
+                        <h4 class="font-bold mb-1 text-accent">Начало работы</h4>
+                        <p class="text-xs text-center text-gray-400 max-w-[150px]">Агенты готовы выполнять задачи</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Simplicity & Security Grid -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-8 lg:gap-16">
+                
+                <!-- Simplicity -->
+                <div class="glass p-8 rounded-2xl border border-white/10 hover:border-secondary/30 transition">
+                    <div class="mb-8">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs font-bold uppercase mb-4 border border-blue-500/20">
+                            <i data-lucide="message-circle" class="w-3 h-3"></i> UX / UI
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Простота использования</h3>
+                        <p class="text-gray-400">Никаких сложных интерфейсов. Сотрудники просто общаются с данными через привычный чат, ставя задачи на естественном языке.</p>
+                    </div>
+                    
+                    <!-- Chat UI Mockup -->
+                    <div class="bg-black/40 rounded-xl p-5 border border-white/10 font-mono text-xs shadow-inner relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary via-accent to-secondary opacity-50"></div>
+                        <!-- User Message (Right) -->
+                        <div class="flex gap-3 mb-4 flex-row-reverse">
+                            <div class="w-8 h-8 rounded-full bg-gray-600 flex-shrink-0 flex items-center justify-center text-[10px]">👤</div>
+                            <div class="bg-white/10 rounded-2xl rounded-tr-none p-3 text-gray-200 max-w-[85%]">
+                                Найди все кредитные договоры за март с просрочкой > 10 дней.
+                            </div>
+                        </div>
+                        <!-- Bot Message (Left) -->
+                        <div class="flex gap-3">
+                            <div class="w-8 h-8 rounded-full bg-secondary flex-shrink-0 flex items-center justify-center"><i data-lucide="bot" class="w-4 h-4 text-primary"></i></div>
+                            <div class="bg-secondary/20 rounded-2xl rounded-tl-none p-3 text-white max-w-[90%]">
+                                <p class="mb-2">Нашел 14 договоров. Вот краткая сводка:</p>
+                                <div class="bg-black/20 p-2 rounded mb-2 border-l-2 border-accent">📊 Общая сумма: 1.2 млрд сум</div>
+                                <a href="#" class="flex items-center gap-2 text-accent hover:underline"><i data-lucide="file-spreadsheet" class="w-3 h-3"></i> Скачать отчет (Excel)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="glass p-8 rounded-2xl border border-white/10 hover:border-red-400/30 transition">
+                    <div class="mb-8">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-bold uppercase mb-4 border border-red-500/20">
+                            <i data-lucide="lock" class="w-3 h-3"></i> Enterprise Security
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">Безопасность данных</h3>
+                        <p class="text-gray-400">Hamkasb.AI позволяет использовать мощь современных LLM без риска утечки. Ваш цифровой контур остается полностью закрытым.</p>
+                    </div>
+                    
+                    <ul class="space-y-4">
+                        <li class="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <div class="bg-secondary/20 p-2 rounded-lg"><i data-lucide="server" class="text-secondary w-5 h-5"></i></div>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">100% On-Premise</h4>
+                                <p class="text-xs text-gray-400">Установка на ваших серверах</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <div class="bg-secondary/20 p-2 rounded-lg"><i data-lucide="cpu" class="text-secondary w-5 h-5"></i></div>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Локальные LLM</h4>
+                                <p class="text-xs text-gray-400">Модели работают без интернета</p>
+                            </div>
+                        </li>
+                        <li class="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5">
+                            <div class="bg-secondary/20 p-2 rounded-lg"><i data-lucide="shield-check" class="text-secondary w-5 h-5"></i></div>
+                            <div>
+                                <h4 class="font-bold text-sm text-white">Защищенный контур</h4>
+                                <p class="text-xs text-gray-400">Работа внутри VPN организации</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Agents Section (Core Value) -->
+    <section id="agents" class="py-12 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <span class="text-secondary font-semibold tracking-wider uppercase text-sm">Наше решение</span>
+                <h2 class="text-4xl md:text-5xl font-bold mt-2 mb-6">10 Специализированных AI-агентов</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Полный штат цифровых сотрудников. Каждый агент — эксперт в своей области с уникальным набором инструментов.
+                </p>
+            </div>
+
+            <!-- All Agents Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- 1. Secretary -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-emerald-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-emerald-500/10 p-3 rounded-xl"><i data-lucide="clipboard-list" class="w-6 h-6 text-emerald-400"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">Канцеляр</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">Документооборот</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">Ваш умный секретарь. Читает входящие, понимает контекст, сортирует по папкам и готовит черновики ответов.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 mt-0.5"></i> Интеграция с ЭДО организации</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 mt-0.5"></i> Векторный поиск по переписке</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 mt-0.5"></i> Чат с базой писем (QA)</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 mt-0.5"></i> Авто-классификация и аналитика</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 mt-0.5"></i> Мультиязычный просмотр (LLM перевод)</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 mt-0.5"></i> Саммарайзинг больших писем</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-emerald-400 mt-0.5"></i> Генерация текстов ответов</li>
+                    </ul>
+                </div>
+
+                <!-- 2. Financier -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-blue-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-blue-500/10 p-3 rounded-xl"><i data-lucide="pie-chart" class="w-6 h-6 text-blue-400"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">Финансист</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">Аналитика и Отчеты</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">Властелин транзакций. Превращает ваши вопросы на человеческом языке в сложные SQL-запросы к базе данных.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 mt-0.5"></i> Своя структура транзакций (ClickHouse)</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 mt-0.5"></i> Понимает структуру БД и пишет SQL</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 mt-0.5"></i> Анализ данных по скоупу доступа</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 mt-0.5"></i> Создание отчетов и графиков</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-blue-400 mt-0.5"></i> Генерация Excel и Word документов</li>
+                    </ul>
+                </div>
+
+                <!-- 3. Librarian -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-secondary">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-secondary/10 p-3 rounded-xl"><i data-lucide="library" class="w-6 h-6 text-secondary"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">Библиотекарь</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">Файловый Центр</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">Видит то, что скрыто. Распознает текст на сканах и фото, раскладывает файлы по полкам и извлекает данные в таблицы.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-secondary mt-0.5"></i> Единое хранилище всех файлов (PDF, Docx)</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-secondary mt-0.5"></i> Векторизация контента (Qdrant + e5-large)</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-secondary mt-0.5"></i> Встроенный OCR (LLM/Parser) для сканов</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-secondary mt-0.5"></i> Создание тематических каталогов</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-secondary mt-0.5"></i> Чат с документами и саммари</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-secondary mt-0.5"></i> Авто-заполнение таблиц из документов</li>
+                    </ul>
+                </div>
+
+                <!-- 4. Client Work (KYC) -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-purple-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-purple-500/10 p-3 rounded-xl"><i data-lucide="users" class="w-6 h-6 text-purple-400"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">Работа с клиентами</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">KYC & Sales</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">360° профиль клиента. Объединяет историю, документы и транзакции для гипер-персонализации.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-purple-400 mt-0.5"></i> Persistant структура данных (Postgres)</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-purple-400 mt-0.5"></i> Векторизация данных клиентов</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-purple-400 mt-0.5"></i> Связь с документами Библиотекаря</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-purple-400 mt-0.5"></i> Простой и векторный поиск</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-purple-400 mt-0.5"></i> Аналитика по данным клиента</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-purple-400 mt-0.5"></i> Гипер-персонализация предложений</li>
+                    </ul>
+                </div>
+
+                <!-- 5. Support -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-yellow-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-yellow-500/10 p-3 rounded-xl"><i data-lucide="headphones" class="w-6 h-6 text-yellow-400"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">Служба поддержки</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">Чат-бот & FAQ</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">Обучается на сайте и базе знаний. Отвечает клиентам в Telegram и Web 24/7.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-yellow-400 mt-0.5"></i> Настраиваемый Web Widget и Telegram бот</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-yellow-400 mt-0.5"></i> База знаний из PDF/Docx/FAQ</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-yellow-400 mt-0.5"></i> AI Кравлер (Crawl4AI) для сайта банка</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-yellow-400 mt-0.5"></i> Персонализация по номеру телефона</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-yellow-400 mt-0.5"></i> Подключение человека-оператора</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-yellow-400 mt-0.5"></i> Классификация и аналитика обращений</li>
+                    </ul>
+                </div>
+
+                <!-- 6. HR -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-pink-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-pink-500/10 p-3 rounded-xl"><i data-lucide="briefcase" class="w-6 h-6 text-pink-400"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">HR Кадровик</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">Кадры и Таланты</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">Структурирует личные дела, парсит резюме и помогает находить таланты внутри команды.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-pink-400 mt-0.5"></i> Структура для данных сотрудников</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-pink-400 mt-0.5"></i> Векторизация личных дел</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-pink-400 mt-0.5"></i> Интеграция с HR системой банка</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-pink-400 mt-0.5"></i> Парсинг неструктурированных данных</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-pink-400 mt-0.5"></i> Аналитика по кадрам (SQL)</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-pink-400 mt-0.5"></i> Генерация справок и отчетов</li>
+                    </ul>
+                </div>
+
+                <!-- 7. Marketer -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-orange-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-orange-500/10 p-3 rounded-xl"><i data-lucide="trending-up" class="w-6 h-6 text-orange-400"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">Маркетолог</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">Стратегии</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">Генерирует стратегии и планы, используя лучшие промпты и исторические данные компании.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-orange-400 mt-0.5"></i> Своя структура данных</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-orange-400 mt-0.5"></i> Векторизированная база знаний</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-orange-400 mt-0.5"></i> Доступ к истории маркетинговых планов</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-orange-400 mt-0.5"></i> Генерация маркетинговых планов</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-orange-400 mt-0.5"></i> Лучшие системные промпты</li>
+                    </ul>
+                </div>
+
+                <!-- 8. PR Specialist -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-red-500">
+                    <div class="absolute top-0 right-0 bg-red-500/20 px-2 py-1 text-[9px] text-red-300 rounded-bl">Outside VPN</div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-red-500/10 p-3 rounded-xl"><i data-lucide="newspaper" class="w-6 h-6 text-red-400"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">PR Специалист</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">Бренд и Репутация</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">Мониторит интернет на упоминания бренда. Анализирует отзывы и пишет пресс-релизы.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-red-400 mt-0.5"></i> Выход в интернет (поиск и парсинг)</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-red-400 mt-0.5"></i> Сбор упоминаний и отзывов о бренде</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-red-400 mt-0.5"></i> Классификация и отчеты</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-red-400 mt-0.5"></i> Интерфейс с источниками данных</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-red-400 mt-0.5"></i> Создание PR стратегий и релизов</li>
+                    </ul>
+                </div>
+
+                <!-- 9. Designer -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-indigo-500">
+                    <div class="absolute top-0 right-0 bg-indigo-500/20 px-2 py-1 text-[9px] text-indigo-300 rounded-bl">Outside VPN</div>
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-indigo-500/10 p-3 rounded-xl"><i data-lucide="palette" class="w-6 h-6 text-indigo-400"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">Дизайнер</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">Визуал и Креатив</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">Генерирует изображения, строго соблюдая цвета и стиль брендбука.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-indigo-400 mt-0.5"></i> Выход в интернет (NanoBanana)</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-indigo-400 mt-0.5"></i> Векторизированная база брендбука</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-indigo-400 mt-0.5"></i> Понимание дизайн-кода и цветов</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-indigo-400 mt-0.5"></i> Генерация изображений для рекламы</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-indigo-400 mt-0.5"></i> Создание контента для билбордов</li>
+                    </ul>
+                </div>
+
+                <!-- 10. SMM Specialist -->
+                <div class="agent-card glass-strong p-6 rounded-2xl relative overflow-hidden flex flex-col border-t-4 border-t-cyan-500">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="bg-cyan-500/10 p-3 rounded-xl"><i data-lucide="smartphone" class="w-6 h-6 text-cyan-400"></i></div>
+                        <div>
+                            <h3 class="text-xl font-bold">SMM Специалист</h3>
+                            <p class="text-xs text-gray-400 uppercase tracking-wide">Соцсети</p>
+                        </div>
+                    </div>
+                    <p class="text-smm text-gray-300 mb-4 italic">Генератор контента. Создает идеи и тексты постов, зная историю всех публикаций.</p>
+                    <ul class="text-xs text-gray-400 space-y-2 mt-auto">
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-cyan-400 mt-0.5"></i> Генерация идей для постов</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-cyan-400 mt-0.5"></i> Доступ к истории публикаций</li>
+                        <li class="flex gap-2"><i data-lucide="check" class="w-3 h-3 text-cyan-400 mt-0.5"></i> Генерация текстов постов</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech" class="py-24 bg-dark/50 relative">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Технологический стек</h2>
+                <p class="text-gray-400">Enterprise-архитектура, построенная на лучших Open Source решениях</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                
+                <!-- 1. AI Intelligence -->
+                <div class="glass p-8 rounded-2xl border border-white/10 hover:border-accent/30 transition group">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-accent/10 p-3 rounded-xl"><i data-lucide="brain-circuit" class="w-6 h-6 text-accent"></i></div>
+                        <h3 class="text-xl font-bold">AI Intelligence</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">LLM Engine</span>
+                            <span class="font-mono text-accent font-bold">GPT-OSS</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">OCR / Vision</span>
+                            <span class="font-mono text-white">Llama-Scout-4</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Embeddings</span>
+                            <span class="font-mono text-white text-xs">intfloat/multilingual-e5-large</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Data Layer -->
+                <div class="glass p-8 rounded-2xl border border-white/10 hover:border-secondary/30 transition group">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-secondary/10 p-3 rounded-xl"><i data-lucide="database" class="w-6 h-6 text-secondary"></i></div>
+                        <h3 class="text-xl font-bold">Data Layer</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Vector DB</span>
+                            <span class="font-mono text-secondary font-bold">Qdrant</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Persistent DB</span>
+                            <span class="font-mono text-white">PostgreSQL</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Vertical DB</span>
+                            <span class="font-mono text-white">ClickHouse</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Application Core -->
+                <div class="glass p-8 rounded-2xl border border-white/10 hover:border-purple-500/30 transition group">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-purple-500/10 p-3 rounded-xl"><i data-lucide="layers" class="w-6 h-6 text-purple-400"></i></div>
+                        <h3 class="text-xl font-bold">Application Core</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Backend</span>
+                            <span class="font-mono text-white">Python / FastAPI</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Frontend</span>
+                            <span class="font-mono text-white">Next.js / Tailwind</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Orchestration</span>
+                            <span class="font-mono text-purple-400 font-bold">Temporal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Infrastructure -->
+                <div class="glass p-8 rounded-2xl border border-white/10 hover:border-orange-500/30 transition group">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="bg-orange-500/10 p-3 rounded-xl"><i data-lucide="container" class="w-6 h-6 text-orange-400"></i></div>
+                        <h3 class="text-xl font-bold">DevOps</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Repository</span>
+                            <span class="font-mono text-white">GitLab (Self-hosted)</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Containerization</span>
+                            <span class="font-mono text-white">Docker / Helm</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b border-white/5 pb-2">
+                            <span class="text-gray-400 text-sm">Orchestrator</span>
+                            <span class="font-mono text-orange-400 font-bold">K8s / Swarm</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Команда <span class="text-secondary">Quantum</span></h2>
+            <p class="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+                Суммарно 48+ лет опыта в IT. Мы не делаем "прототипы" — мы строим высоконагруженные Enterprise-системы, которые годами работают в production.
+            </p>
+
+            <!-- Team Tech Stack -->
+            <div class="max-w-4xl mx-auto mb-16">
+                <div class="glass p-6 rounded-2xl border border-white/10 text-left">
+                    <h4 class="text-smm font-bold text-secondary uppercase tracking-wider mb-4 text-center">Общий стек команды</h4>
+                    <div class="grid md:grid-cols-2 gap-6 text-xs text-gray-300">
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><i data-lucide="database" class="w-4 h-4 text-secondary mt-0.5 shrink-0"></i> <span>PostgreSQL, Complex SQL, PL/SQL, DB Design</span></li>
+                            <li class="flex items-start gap-2"><i data-lucide="server" class="w-4 h-4 text-secondary mt-0.5 shrink-0"></i> <span>Redis, RabbitMQ, Hashicorp Vault, Keycloak, Minio</span></li>
+                            <li class="flex items-start gap-2"><i data-lucide="git-branch" class="w-4 h-4 text-secondary mt-0.5 shrink-0"></i> <span>Git, Gitlab CI/CD, Docker (+Compose)</span></li>
+                        </ul>
+                        <ul class="space-y-2">
+                            <li class="flex items-start gap-2"><i data-lucide="sparkles" class="w-4 h-4 text-accent mt-0.5 shrink-0"></i> <span>AI Coding: Claude Code, Cursor, Warp, MCP</span></li>
+                            <li class="flex items-start gap-2"><i data-lucide="brain-circuit" class="w-4 h-4 text-accent mt-0.5 shrink-0"></i> <span>LLM Tools: Claude, ChatGPT, Perplexity, Grok</span></li>
+                            <li class="flex items-start gap-2"><i data-lucide="wand-2" class="w-4 h-4 text-accent mt-0.5 shrink-0"></i> <span>Prompt Engineering & Context Management</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Alisher -->
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition border-t border-transparent hover:border-secondary/30 text-left flex flex-col">
+                    <div class="w-32 h-32 mx-auto mb-6 relative">
+                        <div class="absolute inset-0 bg-secondary/20 rounded-full blur-xl animate-pulse"></div>
+                        <img src="Alisher.jpg" alt="Алишер Мухторов" class="w-full h-full object-cover rounded-full border-2 border-secondary/50 relative z-10">
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-1">
+                        <a href="https://www.linkedin.com/in/alisher-mukhtarov/" target="_blank" class="hover:text-secondary transition flex items-center justify-center gap-2">
+                            Алишер Мухторов <i data-lucide="external-link" class="w-4 h-4 opacity-50"></i>
+                        </a>
+                    </h3>
+                    <p class="text-secondary font-medium text-center mb-4">Team Lead</p>
+                    <div class="text-sm text-gray-400 mb-4 space-y-2 min-h-[80px]">
+                        <p><strong>Текущая позиция:</strong> CTO at Regain.AI</p>
+                        <p>Разработка сложных высоконагруженных систем, проектирование структуры БД и архитектуры систем, управление командой, составление roadmap и виденья проектов, написание ТЗ, декомпозиция и распределение задач, коммуникация с клиентами и партнерами, стратегическое планирование</p>
+                        <p><strong>Опыт:</strong> 17 лет в программировании, 14 лет Enterprise разработке и архитектуре.</p>
+                        <div class="flex gap-4 mt-3 text-xs">
+                            <a href="https://www.linkedin.com/in/alisher-mukhtarov/" target="_blank" class="flex items-center gap-1 text-secondary hover:text-white transition">
+                                <i data-lucide="linkedin" class="w-3 h-3"></i> LinkedIn
+                            </a>
+                            <a href="Alisher.pdf" target="_blank" class="flex items-center gap-1 text-secondary hover:text-white transition">
+                                <i data-lucide="file-text" class="w-3 h-3"></i> Резюме
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-white/10 flex flex-wrap gap-2 justify-center">
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">AI Agents</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">LangGraph</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">PydanticAI</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">DSPy</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">RAG</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">TTS</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">STT</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">SSE</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Python</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">FastAPI</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Kotlin</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Spring Boot</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Oracle</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">PostgreSQL</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">SQLAlchemy</span>
+                    </div>
+                </div>
+
+                <!-- Shamshod -->
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition border-t border-transparent hover:border-secondary/30 text-left flex flex-col">
+                    <div class="w-32 h-32 mx-auto mb-6 relative">
+                        <img src="Shamshod.jpg" alt="Шамшод Жамолов" class="w-full h-full object-cover rounded-full border-2 border-white/10">
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-1">
+                        <a href="https://www.linkedin.com/in/shamshod-jamolov/" target="_blank" class="hover:text-secondary transition flex items-center justify-center gap-2">
+                            Жамолов Шамшод <i data-lucide="external-link" class="w-4 h-4 opacity-50"></i>
+                        </a>
+                    </h3>
+                    <p class="text-secondary font-medium text-center mb-4">Fullstack Engineer</p>
+                    <div class="text-sm text-gray-400 mb-4 space-y-2 min-h-[80px]">
+                        <p><strong>Текущая позиция:</strong> Backend Engineer at CLick.uz</p>
+                        <p>Проектирование и разработка высоконагруженных финтех систем и платежных шлюзов, Fullstack разработка, аналитический склад ума, быстрое освоение новых технологий</p>
+                        <p><strong>Опыт:</strong> 11+ лет Fullstack разработки.</p>
+                        <div class="flex gap-4 mt-3 text-xs">
+                            <a href="https://www.linkedin.com/in/shamshod-jamolov/" target="_blank" class="flex items-center gap-1 text-secondary hover:text-white transition">
+                                <i data-lucide="linkedin" class="w-3 h-3"></i> LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-auto pt-4 border-t border-white/10 flex flex-wrap gap-2 justify-center">
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">PHP</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Laravel</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Symfony</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">PostgreSQL</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">ClickHouse</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Highload</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Typescript</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Next.js</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Tailwind</span>
+                    </div>
+                </div>
+
+                <!-- Ruslan -->
+                <div class="glass p-8 rounded-2xl hover:bg-white/5 transition border-t border-transparent hover:border-secondary/30 text-left flex flex-col">
+                    <div class="w-32 h-32 mx-auto mb-6 relative">
+                        <img src="Ruslan.jpg" alt="Руслан Аскаров" class="w-full h-full object-cover rounded-full border-2 border-white/10">
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-1">Руслан Аскаров</h3>
+                    <p class="text-secondary font-medium text-center mb-4">DevOps / Backend</p>
+                    <div class="text-sm text-gray-400 mb-4 space-y-2 min-h-[80px]">
+                        <p><strong>Текущая позиция:</strong> DevOps Team Lead at Realsoft</p>
+                        <p>Управление инфраструктурой и CI/CD процессами. Системное администрирование. Установка и администрирование почти любого софта на *nix сервера. Изоляция корпортивной сети (VPN), аудит информационной безопасности. Устранение "узких горлышек" в проектах с помощью более производительных языков. </p>
+                        <p><strong>Опыт:</strong> 20 лет в разработке и администрировании</p>
+                    </div>
+
+                    <div class="mt-auto pt-4 border-t border-white/10 flex flex-wrap gap-2 justify-center">
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">DevOps</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Docker</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">CI/CD</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">K8s</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Helm</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Swarm</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Python</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Go</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Parsers</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">PostgreSQL</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">Clickhouse</span>
+                        <span class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-300 border border-white/5">MySQL</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Banking Consultant -->
+            <div class="max-w-3xl mx-auto mt-16 mb-12">
+                <div class="glass p-6 rounded-2xl border border-accent/20 bg-accent/5">
+                    <div class="flex items-center gap-6">
+                        <div class="w-20 h-20 shrink-0">
+                            <img src="Abdulla.png" alt="Абдулла Бутаев" class="w-full h-full object-cover rounded-full border-2 border-accent/50">
+                        </div>
+                        <div class="flex-grow">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h4 class="text-lg font-bold">
+                                    <a href="https://www.linkedin.com/in/abdulla-butaev/" target="_blank" class="hover:text-secondary transition flex items-center gap-2">
+                                        Абдулла Бутаев <i data-lucide="external-link" class="w-4 h-4 opacity-50"></i>
+                                    </a>
+                                </h4>
+                                <span class="bg-accent/20 text-accent text-xs px-2 py-1 rounded font-bold">Консультант</span>
+                            </div>
+                            <p class="text-sm text-gray-400">12 лет опыта в банковской сфере. Помогает команде понять специфику банковских процессов и требований регулятора.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Projects -->
+            <div class="max-w-5xl mx-auto mt-16 mb-12 text-left">
+                <h4 class="text-smm font-bold text-secondary uppercase tracking-wider mb-6 text-center">Прошлые ключевые проекты</h4>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="glass p-4 rounded-xl border border-white/5 flex gap-4 items-start hover:bg-white/5 transition">
+                        <div class="bg-white/10 p-2 rounded-lg shrink-0"><i data-lucide="activity" class="w-5 h-5 text-accent"></i></div>
+                        <div>
+                            <h5 class="font-bold text-white text-sm">Salomatic (AI MedTech)</h5>
+                            <p class="text-xs text-gray-400 mt-1">AI-First медицинская система: ИИ интерпретация анализов и чекапов, ИИ чат-боты для врачей и пациентов, соответствие информационной безопасности HIPAA/GDPR/PDPL compliance.</p>
+                        </div>
+                    </div>
+                    <div class="glass p-4 rounded-xl border border-white/5 flex gap-4 items-start hover:bg-white/5 transition">
+                        <div class="bg-white/10 p-2 rounded-lg shrink-0"><i data-lucide="coins" class="w-5 h-5 text-blue-400"></i></div>
+                        <div>
+                            <h5 class="font-bold text-white text-sm">STASIS EURS (FinTech)</h5>
+                            <p class="text-xs text-gray-400 mt-1">Крипто-экосистема: кастомная CRM, финансовые модули, онбординг, внутренний процессинг.</p>
+                        </div>
+                    </div>
+                    <div class="glass p-4 rounded-xl border border-white/5 flex gap-4 items-start hover:bg-white/5 transition">
+                        <div class="bg-white/10 p-2 rounded-lg shrink-0"><i data-lucide="layout-grid" class="w-5 h-5 text-purple-400"></i></div>
+                        <div>
+                            <h5 class="font-bold text-white text-sm">Realsoft (LowCode)</h5>
+                            <p class="text-xs text-gray-400 mt-1">Платформа-конструктор ИС: генераторы API, форм, таблиц и динамическая навигация. Система дает возможность собирать информационные системы без написания кода и до сих пор приносит компании большую прибыль.</p>
+                        </div>
+                    </div>
+                    <div class="glass p-4 rounded-xl border border-white/5 flex gap-4 items-start hover:bg-white/5 transition">
+                        <div class="bg-white/10 p-2 rounded-lg shrink-0"><i data-lucide="file-check" class="w-5 h-5 text-emerald-400"></i></div>
+                        <div>
+                            <h5 class="font-bold text-white text-sm">Ministry EDMS (GovTech)</h5>
+                            <p class="text-xs text-gray-400 mt-1">ЭДО для Министерства Образования: цифровизация канцелярии, документооборот, ЭЦП, контроль задач.</p>
+                        </div>
+                    </div>
+                    <div class="glass p-4 rounded-xl border border-white/5 flex gap-4 items-start hover:bg-white/5 transition md:col-span-2">
+                        <div class="bg-white/10 p-2 rounded-lg shrink-0"><i data-lucide="users" class="w-5 h-5 text-orange-400"></i></div>
+                        <div>
+                            <h5 class="font-bold text-white text-sm">Ogram (HR Tech)</h5>
+                            <p class="text-xs text-gray-400 mt-1">Маркетплейс staffing on-demand (UAE/KSA/Greece). Платформа для найма гибкого персонала.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 inline-flex items-center gap-8 bg-white/5 px-8 py-4 rounded-full border border-white/10">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-white">48+</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-wide">Лет общего опыта</div>
+                </div>
+                <div class="w-px h-10 bg-white/10"></div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-white">30+</div>
+                    <div class="text-xs text-gray-500 uppercase tracking-wide">Enterprise проектов</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="py-24 bg-dark/50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Дорожная карта проекта</h2>
+            
+            <div class="relative border-l border-secondary/30 ml-4 md:ml-0 space-y-12">
+                
+                <!-- Phase 1 -->
+                <div class="relative pl-8 md:pl-0">
+                    <div class="absolute left-[-5px] top-2 w-3 h-3 bg-secondary rounded-full shadow-[0_0_10px_#00D4FF]"></div>
+                    <div class="md:flex items-start justify-between group">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <h3 class="text-xl font-bold text-white group-hover:text-secondary transition">Текущий этап: Идея</h3>
+                            <p class="text-secondary font-mono text-sm mb-2">Q4 2024 (Ноябрь - Декабрь)</p>
+                            <div class="inline-block bg-secondary/20 text-secondary text-xs px-2 py-1 rounded animate-pulse">МЫ ЗДЕСЬ</div>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 pb-8 border-b border-white/5">
+                            <ul class="text-gray-400 text-sm space-y-2 list-disc pl-4">
+                                <li>Разработка архитектуры системы и DWH</li>
+                                <li>Реализация 1-3х агентов (Канцеляр, Библиотекарь, Клиенты)</li>
+                                <li>Демонстрация MVP на AI500! Hackathon</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="relative pl-8 md:pl-0">
+                    <div class="absolute left-[-5px] top-2 w-3 h-3 bg-gray-600 rounded-full"></div>
+                    <div class="md:flex items-start justify-between group">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <h3 class="text-xl font-bold text-gray-300 group-hover:text-white transition">MVP и Пилот</h3>
+                            <p class="text-gray-500 font-mono text-sm mb-2">Q1 2025 (Январь - Март)</p>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 pb-8 border-b border-white/5">
+                            <ul class="text-gray-500 text-sm space-y-2 list-disc pl-4">
+                                <li>Запуск 5 агентов (добавляем Финансиста и Поддержку)</li>
+                                <li>Развертывание On-Premise в контуре Агробанка</li>
+                                <li>Первоначальный ETL для финансовых и клиентских данных одного филиала</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="relative pl-8 md:pl-0">
+                    <div class="absolute left-[-5px] top-2 w-3 h-3 bg-gray-600 rounded-full"></div>
+                    <div class="md:flex items-start justify-between group">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <h3 class="text-xl font-bold text-gray-300 group-hover:text-white transition">Полноценная Платформа</h3>
+                            <p class="text-gray-500 font-mono text-sm mb-2">Q2 2025 (Апрель - Июнь)</p>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12 pb-8 border-b border-white/5">
+                            <ul class="text-gray-500 text-sm space-y-2 list-disc pl-4">
+                                <li>Запуск 8 агентов (вкл. HR, Маркетинг, Финансист)</li>
+                                <li>Аудит безопасности и настройка RBAC</li>
+                                <li>Оптимизация работы с документами</li>
+                                <li>Полноценный ETL из систем одного филиала</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="relative pl-8 md:pl-0">
+                    <div class="absolute left-[-5px] top-2 w-3 h-3 bg-gray-600 rounded-full"></div>
+                    <div class="md:flex items-start justify-between group">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <h3 class="text-xl font-bold text-gray-300 group-hover:text-white transition">Масштабирование</h3>
+                            <p class="text-gray-500 font-mono text-sm mb-2">Q3-Q4 2025 (Июль - Ноябрь)</p>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <ul class="text-gray-500 text-sm space-y-2 list-disc pl-4">
+                                <li>Запуск всех 10 агентов</li>
+                                <li>ETL процессы для синхронизации данных</li>
+                                <li>Питон на одном филиале</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 5 -->
+                <div class="relative pl-8 md:pl-0">
+                    <div class="absolute left-[-5px] top-2 w-3 h-3 bg-gray-700 rounded-full"></div>
+                    <div class="md:flex items-start justify-between group">
+                        <div class="md:w-1/2 md:pr-12 md:text-right mb-4 md:mb-0">
+                            <h3 class="text-xl font-bold text-gray-400 group-hover:text-gray-300 transition">Интеграция и ETL</h3>
+                            <p class="text-gray-600 font-mono text-sm mb-2">Q3 2026+ (Июль+)</p>
+                        </div>
+                        <div class="md:w-1/2 md:pl-12">
+                            <ul class="text-gray-600 text-sm space-y-2 list-disc pl-4">
+                                <li>Глубокая интеграция с АБС и CRM системами</li>
+                                <li>Тиражирование на филиальную сеть</li>
+                                <li>API для внешних разработчиков</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="py-12 border-t border-white/10 bg-primary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 gap-8 items-center mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <i data-lucide="cpu" class="text-secondary w-6 h-6"></i>
+                        <span class="text-xl font-bold">Hamkasb AI</span>
+                    </div>
+                    <p class="text-gray-400 max-w-md">
+                        Разработано командой Quantum специально для AI500! Hackathon при поддержке Агробанка Узбекистана.
+                    </p>
+                </div>
+                <div class="text-left md:text-right">
+                    <h4 class="font-bold mb-2">Контакты</h4>
+                    <p class="text-gray-400 mb-1">alishermuxtarov@gmail.com</p>
+                    <p class="text-gray-400">+998 90 718 36 01</p>
+                    <div class="flex gap-4 justify-start md:justify-end mt-4">
+                        <a href="https://t.me/alexmukhtarov" class="text-gray-400 hover:text-white"><i data-lucide="send"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center text-gray-600 text-sm pt-8 border-t border-white/5">
+                &copy; 2024 hamkasb.ai. Все права защищены. Ташкент, Узбекистан.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

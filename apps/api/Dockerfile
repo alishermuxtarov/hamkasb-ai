@@ -45,7 +45,7 @@ RUN groupadd --system --gid 1001 elysiajs && \
 COPY --from=builder --chown=elysiajs:elysiajs /app/apps/api/dist ./dist
 COPY --from=builder --chown=elysiajs:elysiajs /app/apps/api/package.json ./
 COPY --from=deps --chown=elysiajs:elysiajs /app/node_modules ./node_modules
-COPY --from=deps --chown=elysiajs:elysiajs /app/apps/api/node_modules ./node_modules 2>/dev/null || true
+# Note: node_modules from apps/api may not exist if using workspace root install
 
 # Copy Drizzle migrations and config
 COPY --from=builder --chown=elysiajs:elysiajs /app/apps/api/src/lib/db/migrations ./src/lib/db/migrations

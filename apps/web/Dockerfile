@@ -16,10 +16,10 @@ COPY apps/web/package.json ./apps/web/
 COPY packages ./packages
 
 # Install dependencies (pnpm will handle workspaces)
-# Use --ignore-scripts and --no-verify-store-integrity to work around packageManager field
+# Remove packageManager field using node to preserve JSON validity
 WORKDIR /app
-RUN pnpm install --frozen-lockfile --prod --ignore-scripts --no-verify-store-integrity || \
-    (sed -i.bak '/"packageManager"/d' package.json && pnpm install --frozen-lockfile --prod)
+RUN node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); delete pkg.packageManager; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));" && \
+    pnpm install --frozen-lockfile --prod
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder

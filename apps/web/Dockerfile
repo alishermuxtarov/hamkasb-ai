@@ -15,11 +15,14 @@ COPY package.json pnpm-lock.yaml* ./
 COPY apps/web/package.json ./apps/web/
 COPY packages ./packages
 
-# Install dependencies (pnpm will handle workspaces)
-# Remove packageManager field using node to preserve JSON validity
+# Create pnpm-workspace.yaml for pnpm
 WORKDIR /app
+RUN echo "packages:\n  - 'apps/*'\n  - 'packages/*'" > pnpm-workspace.yaml
+
+# Install dependencies (pnpm will handle workspaces)
+# Remove packageManager field using node to preserve JSON validity, then install
 RUN node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json')); delete pkg.packageManager; fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));" && \
-    pnpm install --frozen-lockfile --prod
+    (test -f pnpm-lock.yaml && pnpm install --frozen-lockfile --prod || pnpm install --prod)
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder

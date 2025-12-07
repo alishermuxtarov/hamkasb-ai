@@ -16,6 +16,7 @@ import {
   Share2,
   LayoutDashboard,
   Sparkles,
+  Home,
 } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -24,6 +25,13 @@ const navigationGroups = [
   {
     id: 'main',
     items: [
+      {
+        id: 'home',
+        labelKey: 'home',
+        icon: Home,
+        href: '/',
+        type: 'page' as const,
+      },
       {
         id: 'dashboard',
         labelKey: 'dashboard',
@@ -126,8 +134,11 @@ export function Sidebar() {
   const router = useRouter()
 
   const isActive = (href: string) => {
+    if (href === '/') {
+      return pathname === '/' || pathname === ''
+    }
     if (href === '/dashboard') {
-      return pathname === '/dashboard' || pathname === '/'
+      return pathname === '/dashboard'
     }
     return pathname?.startsWith(href)
   }

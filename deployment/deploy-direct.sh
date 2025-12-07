@@ -234,35 +234,57 @@ cp -r .next/static .next/standalone/apps/web/.next/ 2>/dev/null || true
 
 cd "$DEPLOY_DIR"
 
-# Start API with PM2
-echo -e "${YELLOW}[Server] Starting API with PM2...${NC}"
-cd apps/api
-# Use full path to bun for PM2
-BUN_PATH="$HOME/.bun/bin/bun"
-pm2 start dist/index.js --name hamkasb-api --interpreter "$BUN_PATH" \
-    --env production \
-    --log-date-format "YYYY-MM-DD HH:mm:ss Z" \
-    --merge-logs \
-    --log "$LOG_DIR/hamkasb-api.log" \
-    --error "$LOG_DIR/hamkasb-api-error.log" \
-    --output "$LOG_DIR/hamkasb-api-out.log" \
-    -- \
-    --port 3001
+# Create PM2 ecosystem config with environment variables
+echo -e "${YELLOW}[Server] Creating PM2 ecosystem config...${NC}"
+cd "$DEPLOY_DIR"
+# Load environment variables from .env.production
+export $(cat .env.production | grep -v '^#' | xargs)
+# Create ecosystem.config.js
+cat > ecosystem.config.js << EOF
+module.exports = {
+  apps: [
+    {
+      name: 'hamkasb-api',
+      script: 'apps/api/dist/index.js',
+      interpreter: '/home/alisher/.bun/bin/bun',
+      cwd: '/opt/hamkasb-ai',
+      env: {
+        NODE_ENV: 'production',
+        DATABASE_URL: '${DATABASE_URL}',
+        QDRANT_URL: '${QDRANT_URL}',
+        QDRANT_API_KEY: '${QDRANT_API_KEY}',
+        OPENAI_API_KEY: '${OPENAI_API_KEY}',
+        BLOB_READ_WRITE_TOKEN: '${BLOB_READ_WRITE_TOKEN}',
+        NEXT_PUBLIC_APP_URL: '${NEXT_PUBLIC_APP_URL}',
+        NEXT_PUBLIC_API_URL: '${NEXT_PUBLIC_API_URL}',
+      },
+    },
+    {
+      name: 'hamkasb-web',
+      script: 'apps/web/.next/standalone/apps/web/server.js',
+      interpreter: 'node',
+      cwd: '/opt/hamkasb-ai',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000,
+        DATABASE_URL: '${DATABASE_URL}',
+        QDRANT_URL: '${QDRANT_URL}',
+        QDRANT_API_KEY: '${QDRANT_API_KEY}',
+        OPENAI_API_KEY: '${OPENAI_API_KEY}',
+        BLOB_READ_WRITE_TOKEN: '${BLOB_READ_WRITE_TOKEN}',
+        NEXT_PUBLIC_APP_URL: '${NEXT_PUBLIC_APP_URL}',
+        NEXT_PUBLIC_API_URL: '${NEXT_PUBLIC_API_URL}',
+      },
+    },
+  ],
+}
+EOF
 
-# Start Web with PM2
-echo -e "${YELLOW}[Server] Starting Web with PM2...${NC}"
-cd "$DEPLOY_DIR/apps/web"
-# Next.js standalone creates server.js in .next/standalone/apps/web/
-# Set PORT environment variable
-export PORT=3000
-pm2 start "$DEPLOY_DIR/apps/web/.next/standalone/apps/web/server.js" --name hamkasb-web \
-    --interpreter node \
-    --env production \
-    --log-date-format "YYYY-MM-DD HH:mm:ss Z" \
-    --merge-logs \
-    --log "$LOG_DIR/hamkasb-web.log" \
-    --error "$LOG_DIR/hamkasb-web-error.log" \
-    --output "$LOG_DIR/hamkasb-web-out.log"
+# Start applications with PM2
+echo -e "${YELLOW}[Server] Starting applications with PM2...${NC}"
+pm2 delete all 2>/dev/null || true
+pm2 start ecosystem.config.js
+pm2 save
 
 # Save PM2 configuration
 pm2 save

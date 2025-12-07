@@ -115,11 +115,59 @@ export const chatRoutes = new Elysia({ prefix: '/chat' })
     '/:agentId',
     async ({ params, body, set }) => {
       const { agentId } = params
-      const { message, sessionId, userId, forceNew } = body as {
-        message: string
-        sessionId?: string
-        userId?: string
-        forceNew?: boolean
+      
+      // Поддержка двух форматов: старый (message) и новый (messages array от AI SDK)
+      let message: string
+      let sessionId: string | undefined
+      let userId: string | undefined
+      let forceNew: boolean | undefined
+      
+      const bodyAny = body as any
+      
+      // Если пришел формат с messages (AI SDK)
+      if (bodyAny.messages && Array.isArray(bodyAny.messages)) {
+        // Берем последнее сообщение пользователя
+        const lastUserMessage = bodyAny.messages
+          .filter((m: any) => m.role === 'user')
+          .pop()
+        
+        if (lastUserMessage) {
+          // Извлекаем текст из разных форматов
+          if (typeof lastUserMessage.content === 'string') {
+            message = lastUserMessage.content
+          } else if (Array.isArray(lastUserMessage.parts)) {
+            // Формат с parts
+            const textPart = lastUserMessage.parts.find((p: any) => p.type === 'text')
+            message = textPart?.text || ''
+          } else if (typeof lastUserMessage.content === 'object' && lastUserMessage.content?.text) {
+            message = lastUserMessage.content.text
+          } else {
+            message = String(lastUserMessage.content || '')
+          }
+        } else {
+          set.status = 400
+          return {
+            error: 'No user message found in messages array',
+          }
+        }
+        
+        // Извлекаем другие параметры
+        sessionId = bodyAny.sessionId || bodyAny.id
+        userId = bodyAny.userId
+        forceNew = bodyAny.forceNew
+      } else {
+        // Старый формат с message
+        message = bodyAny.message
+        sessionId = bodyAny.sessionId
+        userId = bodyAny.userId
+        forceNew = bodyAny.forceNew
+      }
+      
+      if (!message || typeof message !== 'string') {
+        set.status = 400
+        return {
+          error: 'Message is required and must be a string',
+        }
       }
 
       console.log('[Backend /chat/:agentId] Request received:', {
@@ -556,12 +604,29 @@ export const chatRoutes = new Elysia({ prefix: '/chat' })
       params: t.Object({
         agentId: t.String(),
       }),
-      body: t.Object({
-        message: t.String(),
-        sessionId: t.Optional(t.String()),
-        userId: t.Optional(t.String()),
-        forceNew: t.Optional(t.Boolean()),
-      }),
+      body: t.Union([
+        // Старый формат
+        t.Object({
+          message: t.String(),
+          sessionId: t.Optional(t.String()),
+          userId: t.Optional(t.String()),
+          forceNew: t.Optional(t.Boolean()),
+        }),
+        // Новый формат (AI SDK)
+        t.Object({
+          id: t.Optional(t.String()),
+          messages: t.Array(
+            t.Object({
+              role: t.String(),
+              content: t.Union([t.String(), t.Array(t.Any())]),
+              parts: t.Optional(t.Array(t.Any())),
+            })
+          ),
+          sessionId: t.Optional(t.String()),
+          userId: t.Optional(t.String()),
+          forceNew: t.Optional(t.Boolean()),
+        }),
+      ]),
       detail: {
         tags: ['Chat'],
         summary: 'Отправить сообщение агенту',

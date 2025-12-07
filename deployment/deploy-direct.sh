@@ -215,6 +215,17 @@ echo -e "${YELLOW}[Server] Building API...${NC}"
 cd apps/api
 bun install --frozen-lockfile || bun install
 bun run build
+
+# Copy pdf.js files needed by pdf-parse (Bun doesn't copy them automatically)
+echo -e "${YELLOW}[Server] Copying pdf.js files for pdf-parse...${NC}"
+if [ -d "node_modules/pdf-parse/lib/pdf.js" ]; then
+    mkdir -p dist/pdf.js
+    cp -r node_modules/pdf-parse/lib/pdf.js/* dist/pdf.js/ 2>/dev/null || true
+    echo -e "${GREEN}[Server] pdf.js files copied${NC}"
+else
+    echo -e "${YELLOW}[Server] Warning: pdf.js directory not found${NC}"
+fi
+
 cd "$DEPLOY_DIR"
 
 # Build and setup Web

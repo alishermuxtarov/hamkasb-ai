@@ -226,6 +226,12 @@ node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('../../pac
 printf "packages:\n  - 'apps/*'\n  - 'packages/*'\n" > ../../pnpm-workspace.yaml
 pnpm install --frozen-lockfile || pnpm install
 pnpm build
+
+# Copy static files to standalone directory (Next.js standalone doesn't copy them automatically)
+echo -e "${YELLOW}[Server] Copying static files to standalone...${NC}"
+mkdir -p .next/standalone/apps/web/.next
+cp -r .next/static .next/standalone/apps/web/.next/ 2>/dev/null || true
+
 cd "$DEPLOY_DIR"
 
 # Start API with PM2

@@ -38,8 +38,8 @@ FROM oven/bun:1-slim AS runner
 WORKDIR /app
 
 # Create non-root user for security
-RUN addgroup --system --gid 1001 elysiajs && \
-    adduser --system --uid 1001 elysiajs
+RUN groupadd --system --gid 1001 elysiajs && \
+    useradd --system --uid 1001 --gid elysiajs elysiajs
 
 # Copy necessary files from API app
 COPY --from=builder --chown=elysiajs:elysiajs /app/apps/api/dist ./dist
